@@ -426,10 +426,18 @@ function shellLoad(args)
 	text = trim(text);
 	var isValid = (/^[0-9a-f]{2}( [0-9a-f]{2})*$/i.test(text));
 		//any 2 num or letter,( a space, any 2 num or letter)zero or more times, $=string end and case insensitive
+	var arrayOpCodes = text.split(" ");
+	var currentOp = "";
 	
 	if (isValid)
 	{
 		_StdIn.putText("'"+text+"' is valid!");
+		
+		
+		
+		
+		
+		
 	}
 	else {_StdIn.putText("Invalid. Please check your User Program Input.");}
 }

@@ -57,9 +57,7 @@ function krnKbdDispatchKeyPress(params)
 			   (keyCode == 13)					   ||	// enter
                (keyCode == 8)					   ||	// backspace
 			   (keyCode == 38)						)	// up arrow key
-    {
-        chr = String.fromCharCode(keyCode);
-		
+    {		
 		if (isShifted) 								   //digits, shifted
         {
 			if ( (keyCode >= 51) && (keyCode <= 53) || //shift3 #, shift4 $, shift5 %
@@ -69,14 +67,20 @@ function krnKbdDispatchKeyPress(params)
 			{	chr = String.fromCharCode(keyCode + 14);	}
 			else if ( (keyCode == 56) )				   //shift8 *
 			{	chr = String.fromCharCode(keyCode - 14);	}
-			else if ( (keyCode == 55) || 			   //shift7 &
-					  (keyCode == 57) )				   //shift9 (
+			else if ( (keyCode == 57) )				   //shift9 (
 			{	chr = String.fromCharCode(keyCode - 17);	}
+			else if (  (keyCode == 55) ) 			   //shift7 &
+			{	chr = String.fromCharCode(keyCode-17);		}
 			else if ( (keyCode == 54) )				   //shift6 ^
 			{	chr = String.fromCharCode(keyCode + 40);	}
 			else if ( (keyCode == 48) )				   //shift0 )
 			{	chr = String.fromCharCode(keyCode - 7);		}		
         }
+		
+		else if (!isShifted)
+		{ 
+			chr = String.fromCharCode(keyCode);
+		}
 		_KernelInputQueue.enqueue(chr); 
     }
 	else if ( (keyCode >= 96) && (keyCode <= 105) ) //numpad digits (assumed numlock on TODO: fix so it knows if numlock on or not
@@ -123,6 +127,7 @@ function krnKbdDispatchKeyPress(params)
 	    chr = String.fromCharCode(keyCode - 183);
 		if(isShifted)
 		{	chr = String.fromCharCode(keyCode - 188);	}
+		
         _KernelInputQueue.enqueue(chr);	
 	}	
 	
