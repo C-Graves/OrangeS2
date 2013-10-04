@@ -116,6 +116,7 @@ CanvasTextFunctions.letters = {
 CanvasTextFunctions.letter = function (ch) 
 {
     return CanvasTextFunctions.letters[ch];
+	
 };
 
 CanvasTextFunctions.ascent = function(font, size) 
