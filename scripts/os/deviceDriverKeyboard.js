@@ -32,6 +32,8 @@ function krnKbdDispatchKeyPress(params)
     var isShifted = params[1];
     krnTrace("Key code:" + keyCode + " shifted:" + isShifted);
     var chr = "";
+	
+	var j = _Console.recalledBuffer.length;
     // Check to see if we even want to deal with the key that was pressed.
  	if ( (keyCode == 192) )				  // ` 
 	{
@@ -52,11 +54,7 @@ function krnKbdDispatchKeyPress(params)
         // TODO: Check for caps-lock and handle as shifted if so.
         _KernelInputQueue.enqueue(chr);        
     }    
-    else if ( ((keyCode >= 48) && (keyCode <= 57)) ||   // digits 
-               (keyCode == 32)                     ||   // space
-			   (keyCode == 13)					   ||	// enter
-               (keyCode == 8)					   ||	// backspace
-			   (keyCode == 38)						)	// up arrow key
+    else if ( ((keyCode >= 48) && (keyCode <= 57)) )   // digits            
     {		
 		if (isShifted) 								   //digits, shifted
         {
@@ -76,13 +74,21 @@ function krnKbdDispatchKeyPress(params)
 			else if ( (keyCode == 48) )				   //shift0 )
 			{	chr = String.fromCharCode(keyCode - 7);		}		
         }
-		
-		else if (!isShifted)
-		{ 
-			chr = String.fromCharCode(keyCode);
-		}
+		 
+		else{ chr = String.fromCharCode(keyCode); }
 		_KernelInputQueue.enqueue(chr); 
     }
+	
+	else if (  (keyCode == 32)                     ||   // space
+			   (keyCode == 13)					   ||	// enter
+               (keyCode == 8)					   )//||	// backspace
+			   //(keyCode == 38)						 )	// up arrow key		   
+	{
+			chr = String.fromCharCode(keyCode);
+			_KernelInputQueue.enqueue(chr); 
+	}		   
+	
+	
 	else if ( (keyCode >= 96) && (keyCode <= 105) ) //numpad digits (assumed numlock on TODO: fix so it knows if numlock on or not
 	{
         chr = String.fromCharCode(keyCode - 48); //TODO: shifted numpad?
@@ -131,9 +137,63 @@ function krnKbdDispatchKeyPress(params)
         _KernelInputQueue.enqueue(chr);	
 	}	
 	
+	else if (keyCode == 38) 
+	{
+		chr = String.fromCharCode(keyCode - 21);
+		_KernelInputQueue.enqueue(chr);	
+	}
+	else if (keyCode == 40)
+	{
+		chr = String.fromCharCode(keyCode - 22);
+		_KernelInputQueue.enqueue(chr);	
+	}
+	
+/*	else if (keyCode == 13)  //     Enter key
+    {
+	   // The enter key marks the end of a console command, so ...
+	   // ... tell the shell ...
+	   _OsShell.handleInput(this.buffer);
+	   //save last buffer
+	   this.recalledBuffer[i] = this.buffer;
+	   // ... and reset our buffer.
+	   this.buffer = "";
+	   console.log(this.recalledBuffer[i]);
+	   console.log(this.recalledBuffer.length);
+	   i++;
+	   console.log(i);
+    }
+	*/
+	
+/*	else if ( keyCode == 38 && (!isShifted))
+	{
+		if(_Console.recalledBuffer)
+		{
+			//for(var i=0; i<=_Console.recalledBuffer.length; i++)
+			//{
+			if (j >= 0){
+				console.log(j+ " = current j");
+				//_Console.buffer = "";
+				//_Console.putText(_Console.buffer);
+				_Console.buffer = _Console.recalledBuffer[j-1];
+				_Console.putText(_Console.recalledBuffer[j-1]);
+				j--;
+			}
+			
+			console.log(j+ " = after decrement j");
+			//}
+			
+		}
+		_Console.recalledBuffer = "";
+	}
+	*/	   
+	
 	else 
 	{ 
+		if (keyCode != 16)
+		{
 		krnTrace("Invalid Key Press: Please try again.");
 		//krnTrapError("That was not an accepted key press. Goodbye.");
+		}
 	}
+	
 }

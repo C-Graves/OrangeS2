@@ -16,7 +16,9 @@ function CLIconsole() {
     this.CurrentXPosition = 0;
     this.CurrentYPosition = _DefaultFontSize;
     this.buffer = "";
-	this.recalledBuffer = "";
+	this.recalledBuffer = [];
+	var i = 0;
+	var j = this.recalledBuffer.length;
     
     // Methods
     this.init = function() {
@@ -45,10 +47,14 @@ function CLIconsole() {
                // ... tell the shell ...
                _OsShell.handleInput(this.buffer);
 			   //save last buffer
-			   this.recalledBuffer = this.buffer;
+			   this.recalledBuffer[i] = this.buffer;
                // ... and reset our buffer.
                this.buffer = "";
-           }
+			   console.log(this.recalledBuffer[i]);
+			   console.log(this.recalledBuffer.length);
+			   i++;
+			   //console.log(i);
+           } 
 		   else if (chr == String.fromCharCode(8))  //     Backspace
            {
 				if(this.buffer.length > 0)
@@ -57,18 +63,64 @@ function CLIconsole() {
 					this.buffer = this.buffer.slice(0, this.buffer.length - 1);
 				}
            }
-		   else if (chr == String.fromCharCode(38))
+		   else if (chr == String.fromCharCode(17)) // up arrow
 		   {
-				if(this.recalledBuffer)
-				{
-					for(var i=0; i<=this.recalledBuffer.length; i++)
+			
+			if(this.recalledBuffer)
+			{
+				//for(var i=0; i<=this.recalledBuffer.length; i++)
+				//{
+				if (i > 0){
+					console.log(i+ " = current i");
+					console.log(this.buffer.length);
+					while(this.buffer.length > 0)
 					{
-						this.putText(this.recalledBuffer.charAt(i));
-						this.buffer = this.recalledBuffer;
+						this.removeLastChar(this.buffer.charAt(this.buffer.length - 1));
+						this.buffer = this.buffer.slice(0, this.buffer.length - 1);
 					}
+					//this.buffer = "";
+					this.buffer = this.recalledBuffer[i-1];
+					this.putText(this.recalledBuffer[i-1]);
+					i--;
 				}
-				this.recalledBuffer = "";
+				
+				console.log(i+ " = after decrement i");
+				//}
+			
+			}
+			//this.recalledBuffer = "";
 		   }
+		   
+		   else if (chr == String.fromCharCode(18)) // up arrow
+		   {
+			
+			if(this.recalledBuffer)
+			{
+				//for(var i=0; i<=this.recalledBuffer.length; i++)
+				//{
+				if (i < this.recalledBuffer.length-1){
+					console.log(i+ " = current i");
+					console.log(this.buffer.length);
+					while(this.buffer.length > 0)
+					{
+						this.removeLastChar(this.buffer.charAt(this.buffer.length - 1));
+						this.buffer = this.buffer.slice(0, this.buffer.length - 1);
+					}
+					this.buffer = this.recalledBuffer[i+1];
+					this.putText(this.recalledBuffer[i+1]);
+					i++;
+				}
+				
+				console.log(i+ " = after decrement i");
+				//}
+			
+			}
+			//this.recalledBuffer = "";
+		   }
+		   
+		   
+		   
+		   
 		   
            // TODO: Write a case for Ctrl-C.
            else
