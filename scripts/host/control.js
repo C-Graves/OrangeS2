@@ -35,6 +35,8 @@ function hostInit()
 
 	// Set focus on the start button.
    document.getElementById("btnStartOS").focus();
+   
+   makeMemoryTable();
 
    // Check for our testing and enrichment core.
    if (typeof Glados === "function") {
@@ -91,7 +93,7 @@ function hostBtnStartOS_click(btn)
     // .. and call the OS Kernel Bootstrap routine.
     krnBootstrap();
 	
-	//_Memory = new Memory();
+	_Memory = new memory();
 	
 	_LoadedJobs = new Array();
 }

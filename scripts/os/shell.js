@@ -434,7 +434,7 @@ function shellLoad(args)
 		//any 2 num or letter,( a space, any 2 num or letter)zero or more times, $=string end and case insensitive
 	
 
-	var arrayOpCodes = text.split(" ");
+	var arrayOpcodes = text.split(" ");
 	var currentOp = "";
 	
 	
@@ -446,14 +446,25 @@ function shellLoad(args)
 	
 		var pid = _PID++; //increments the global _PID for the next load
 		var pc = 0;
-		//var base;
-		//var limit;
-		//var slot;
+
+		var base = 0;
+		var limit = _TotalMemory;
 		
-		//var memorySlot = _MemoryManager.getNextOpenSlot();
-		//var base = memorySlot.base;
-		//var limit = memorySlot.limit;
-		//var slot = memorySlot.slotNum;
+		for( var i = base; i < arrayOpcodes.length + base; i++)
+		{
+			opcode = arrayOpcodes[i - base];
+			_Memory[i] = opcode.toUpperCase();			
+		}
+		
+		var index = 0;
+		for(var row=0; row<32; row++)
+		{
+			for(var coll=1; coll<9; coll++)
+			{
+				_MemoryDisplayCells[row][coll].innerHTML = _Memory[index];
+				index++;
+			}
+		}
 		
 		_LoadedJobs[pid] = pid; 
 		
@@ -524,6 +535,10 @@ function shellRun(args)
 	else
 	{
 		_StdIn.putText("Running...");
+		
+		//run the code
+		
+		
 	}
 
 
