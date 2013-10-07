@@ -49,11 +49,8 @@ function CLIconsole() {
 			   //save last buffer
 			   this.recalledBuffer[i] = this.buffer;
                // ... and reset our buffer.
-               this.buffer = "";
-			   console.log(this.recalledBuffer[i]);
-			   console.log(this.recalledBuffer.length);
+               this.buffer = "";		
 			   i++;
-			   //console.log(i);
            } 
 		   else if (chr == String.fromCharCode(8))  //     Backspace
            {
@@ -68,39 +65,24 @@ function CLIconsole() {
 			
 			if(this.recalledBuffer)
 			{
-				//for(var i=0; i<=this.recalledBuffer.length; i++)
-				//{
 				if (i > 0){
-					console.log(i+ " = current i");
-					console.log(this.buffer.length);
 					while(this.buffer.length > 0)
 					{
 						this.removeLastChar(this.buffer.charAt(this.buffer.length - 1));
 						this.buffer = this.buffer.slice(0, this.buffer.length - 1);
 					}
-					//this.buffer = "";
 					this.buffer = this.recalledBuffer[i-1];
 					this.putText(this.recalledBuffer[i-1]);
 					i--;
 				}
-				
-				console.log(i+ " = after decrement i");
-				//}
-			
 			}
-			//this.recalledBuffer = "";
 		   }
 		   
 		   else if (chr == String.fromCharCode(18)) // up arrow
 		   {
-			
 			if(this.recalledBuffer)
 			{
-				//for(var i=0; i<=this.recalledBuffer.length; i++)
-				//{
 				if (i < this.recalledBuffer.length-1){
-					console.log(i+ " = current i");
-					console.log(this.buffer.length);
 					while(this.buffer.length > 0)
 					{
 						this.removeLastChar(this.buffer.charAt(this.buffer.length - 1));
@@ -110,18 +92,9 @@ function CLIconsole() {
 					this.putText(this.recalledBuffer[i+1]);
 					i++;
 				}
-				
-				console.log(i+ " = after decrement i");
-				//}
-			
 			}
-			//this.recalledBuffer = "";
 		   }
-		   
-		   
-		   
-		   
-		   
+   
            // TODO: Write a case for Ctrl-C.
            else
            {

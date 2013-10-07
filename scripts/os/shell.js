@@ -101,17 +101,17 @@ function shellInit() {
     sc.function = shellLoad;
     this.commandList[this.commandList.length] = sc;
 	
-	// magic8ball <string>
+	// magic8ball <question>
     sc = new ShellCommand();
     sc.command = "magic8ball";
-    sc.description = "<string> - Predicts an answer.";
+    sc.description = "<question> - Predicts an answer.";
     sc.function = shellMagic8Ball;
     this.commandList[this.commandList.length] = sc;
 	
 	// BSOD 
     sc = new ShellCommand();
     sc.command = "bsod";
-    sc.description = "<string> - Just try it.";
+    sc.description = "- Just try it.";
     sc.function = shellBSOD;
     this.commandList[this.commandList.length] = sc; 
 	
@@ -121,7 +121,13 @@ function shellInit() {
     sc.description = "<string> - Updates status with given <string>.";
     sc.function = shellStatus;
     this.commandList[this.commandList.length] = sc; 
-	
+
+	// run <PID>
+    sc = new ShellCommand();
+    sc.command = "run";
+    sc.description = "<PID> - Runs program in memory for given <PID>.";
+    sc.function = shellRun;
+    this.commandList[this.commandList.length] = sc; 	
 
 	
     // processes - list the running processes and their IDs
@@ -426,20 +432,39 @@ function shellLoad(args)
 	text = trim(text);
 	var isValid = (/^[0-9a-f]{2}( [0-9a-f]{2})*$/i.test(text));
 		//any 2 num or letter,( a space, any 2 num or letter)zero or more times, $=string end and case insensitive
+	
+
 	var arrayOpCodes = text.split(" ");
 	var currentOp = "";
+	
+	
+	//var pid = loadedArray[0];
 	
 	if (isValid)
 	{
 		_StdIn.putText("'"+text+"' is valid!");
+	
+		var pid = _PID++; //increments the global _PID for the next load
+		var pc = 0;
+		//var base;
+		//var limit;
+		//var slot;
 		
+		//var memorySlot = _MemoryManager.getNextOpenSlot();
+		//var base = memorySlot.base;
+		//var limit = memorySlot.limit;
+		//var slot = memorySlot.slotNum;
 		
+		_LoadedJobs[pid] = pid; 
 		
-		
-		
+		_StdIn.advanceLine();
+		//_StdIn.putText("Process with PID *unknown* added to memory.");
+		_StdIn.putText("Process with PID " + pid + " added to memory");
 		
 	}
 	else {_StdIn.putText("Invalid. Please check your User Program Input.");}
+
+	
 }
 
 function shellMagic8Ball(args)
@@ -484,5 +509,23 @@ function shellBSOD(args)
 {
 	krnTrapError("You have triggered the BSOD. Goodbye.");
 	//BSOD...sort of.
+}
+
+function shellRun(args)
+{
+	if(args.length === 0 || parseInt(args) != args)
+	{
+		_StdIn.putText("Please enter a valid PID.");
+	}
+	else if ( parseInt(args) > _LoadedJobs.length-1 ) 
+	{
+		_StdIn.putText("Invalid PID.");
+	}
+	else
+	{
+		_StdIn.putText("Running...");
+	}
+
 
 }
+

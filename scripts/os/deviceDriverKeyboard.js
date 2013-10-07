@@ -51,7 +51,9 @@ function krnKbdDispatchKeyPress(params)
         {
             chr = String.fromCharCode(keyCode);
         }
+		
         // TODO: Check for caps-lock and handle as shifted if so.
+		
         _KernelInputQueue.enqueue(chr);        
     }    
     else if ( ((keyCode >= 48) && (keyCode <= 57)) )   // digits            
@@ -87,8 +89,7 @@ function krnKbdDispatchKeyPress(params)
 			chr = String.fromCharCode(keyCode);
 			_KernelInputQueue.enqueue(chr); 
 	}		   
-	
-	
+
 	else if ( (keyCode >= 96) && (keyCode <= 105) ) //numpad digits (assumed numlock on TODO: fix so it knows if numlock on or not
 	{
         chr = String.fromCharCode(keyCode - 48); //TODO: shifted numpad?
@@ -148,45 +149,6 @@ function krnKbdDispatchKeyPress(params)
 		_KernelInputQueue.enqueue(chr);	
 	}
 	
-/*	else if (keyCode == 13)  //     Enter key
-    {
-	   // The enter key marks the end of a console command, so ...
-	   // ... tell the shell ...
-	   _OsShell.handleInput(this.buffer);
-	   //save last buffer
-	   this.recalledBuffer[i] = this.buffer;
-	   // ... and reset our buffer.
-	   this.buffer = "";
-	   console.log(this.recalledBuffer[i]);
-	   console.log(this.recalledBuffer.length);
-	   i++;
-	   console.log(i);
-    }
-	*/
-	
-/*	else if ( keyCode == 38 && (!isShifted))
-	{
-		if(_Console.recalledBuffer)
-		{
-			//for(var i=0; i<=_Console.recalledBuffer.length; i++)
-			//{
-			if (j >= 0){
-				console.log(j+ " = current j");
-				//_Console.buffer = "";
-				//_Console.putText(_Console.buffer);
-				_Console.buffer = _Console.recalledBuffer[j-1];
-				_Console.putText(_Console.recalledBuffer[j-1]);
-				j--;
-			}
-			
-			console.log(j+ " = after decrement j");
-			//}
-			
-		}
-		_Console.recalledBuffer = "";
-	}
-	*/	   
-	
 	else 
 	{ 
 		if (keyCode != 16)
@@ -195,5 +157,4 @@ function krnKbdDispatchKeyPress(params)
 		//krnTrapError("That was not an accepted key press. Goodbye.");
 		}
 	}
-	
 }
