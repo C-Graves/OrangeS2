@@ -117,11 +117,12 @@ function makeMemoryTable() //automagically
 			cells[i][j] = document.createElement("td");
 			if (j === 0)
 			{
-				var pos = (i*8).toString();
+				var pos = (i*8).toString(16).toUpperCase();
 				console.log(pos.length);
-				if (pos.length === 1) {pos = "00"+pos;}
-				else if (pos.length === 2) {pos = "0"+pos;}
-				
+				if (pos.length === 1) {pos = "$000"+pos;}
+				else if (pos.length === 2) {pos = "$00"+pos;}
+				else if (pos.length === 3) {pos = "$0"+pos;}
+				else{pos="$"+pos;}
 				cells[i][j].innerHTML = (pos);
 			}
 			else {cells[i][j].innerHTML = "--";}

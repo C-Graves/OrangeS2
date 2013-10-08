@@ -537,7 +537,7 @@ function shellRun(args)
 		_StdIn.putText("Running...");
 		
 		//run the code
-		
+		_CPU.isExecuting = true;
 		
 	}
 

@@ -31,8 +31,267 @@ function Cpu() {
     };
     
     this.cycle = function() {
+
         krnTrace("CPU cycle");
         // TODO: Accumulate CPU usage and profiling statistics here.
         // Do the real work here. Be sure to set this.isExecuting appropriately.
-    };
+		
+		this.execute(this.fetch());
+		
+		//update CPU values in realtime
+		//updateCPUStatus();
+		this.updateCPU();
+		this.updateAcc();
+		this.updateXreg();
+		this.updateYreg();
+		this.updateZflag();
+	};
+		
+		this.updateCPU = function()
+		{
+			var cpuTable = document.getElementById("pcStatus").innerHTML=this.PC;
+		};
+		this.updateAcc = function()
+		{
+			var cpuTable = document.getElementById("accStatus").innerHTML=this.Acc;
+		};
+		this.updateXreg = function()
+		{
+			var cpuTable = document.getElementById("xStatus").innerHTML=this.Xreg;
+		};
+		this.updateYreg = function()
+		{
+			var cpuTable = document.getElementById("yStatus").innerHTML=this.Yreg;
+		};
+		this.updateZflag = function()
+		{
+			var cpuTable = document.getElementById("zStatus").innerHTML=this.Zflag;
+		};
+		
+		
+		
+		this.fetch = function()
+		{
+			return _Memory[this.PC + 0]; //0 === the base of the program
+		};
+		
+		this.execute = function(opcode)
+		{
+			if(opcode === "A9") //Load accumulator with a constant
+			{
+				this.Acc = parseInt(_Memory[(this.PC + 1)+0],16);
+				this.PC++;
+			}
+			else if(opcode === "AD") //Load the accumulator in memory
+			{
+				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
+				var nextNext = parseInt(_Memory[(this.PC + 1)+0],16);
+				var addressH = (nextNext + nextCell);
+				var addressD = parseInt(addressH,16) + 0; //0=base
+				if(addressD >=0 && addressD <= _TotalMemory)
+				{
+					this.Acc = parseInt(_Memory[addressD]);
+				}
+				else
+				{
+					krnTrace("Invalid memory access during AD. Program ended."); //halt system? //errors?
+				}
+				this.PC++;
+			}
+			else if(opcode === "8D") //Store the accumulator in memory
+			{
+				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
+				var nextNext = parseInt(_Memory[(this.PC + 2)+0],16);
+				var addressH = (nextNext + nextCell);
+				var addressD = parseInt(addressH,16) + 0; //0=base
+				if(addressD >=0 && addressD <= _TotalMemory)
+				{
+					var accToHex = this.Acc.toString(16);
+					//accToHex = accToHex.toUppercase();
+					if(accToHex.length === 1) {accToHex = "0" + accToHex;}
+					_Memory[addressD] = accToHex;
+				}
+				else
+				{
+					krnTrace("Invalid memory access during 8D. Program ended."); //halt system? //errors?
+				}
+				this.PC++;
+			}
+			else if(opcode === "6D") //Add with carry
+			{						 // adds content of address to the contents of acc- results in acc
+				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
+				var nextNext = parseInt(_Memory[(this.PC + 1)+0],16);
+				var addressH = (nextNext + nextCell);
+				var addressD = parseInt(addressH,16) + 0; //0=base
+				if(addressD >=0 && addressD <= _TotalMemory)
+				{
+					this.Acc = this.Acc + parseInt(_Memory[addressD],16);
+					
+					var accToHex = this.Acc.toString(16).toUppercase();
+					if(accToHex.length === 1) {accToHex = "0" + accToHex;}
+					_Memory[addressD] = accToHex;
+				}
+				else
+				{
+					krnTrace("Invalid memory access during 6D. Program ended."); //halt system? //errors?
+				}
+				this.PC++;
+			}
+			else if(opcode === "A2") //Load the X register with a constant
+			{
+				this.Xreg = parseInt(_Memory[(this.PC + 1)+0],16);
+				this.PC++;
+			}
+			else if(opcode === "AE") //Load the X register from memory
+			{
+				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
+				var nextNext = parseInt(_Memory[(this.PC + 2)+0],16);
+				var addressH = (nextNext + nextCell);
+				var addressD = parseInt(addressH,16) + 0; //0=base
+				if(addressD >=0 && addressD <= _TotalMemory)
+				{
+					this.Xreg = parseInt(_Memory[addressD],16);
+				}
+				else
+				{
+					krnTrace("Invalid memory access during AE. Program ended."); //halt system? //errors?
+				}
+
+				this.PC++;
+			}
+			else if(opcode === "A0") //Load the Y register with a constant
+			{
+				this.Yreg = parseInt(_Memory[(this.PC + 1)+0],16);
+				this.PC++;
+			}
+			else if(opcode === "AC") //Load the Y register from memory
+			{
+				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
+				var nextNext = parseInt(_Memory[(this.PC + 2)+0],16);
+				var addressH = (nextNext + nextCell);
+				var addressD = parseInt(addressH,16) + 0; //0=base
+				if(addressD >=0 && addressD <= _TotalMemory)
+				{
+					this.Yreg = parseInt(_Memory[addressD],16);
+				}
+				else
+				{
+					krnTrace("Invalid memory access during AC. Program ended."); //halt system? //errors?
+				}
+				this.PC++;
+			}
+			else if(opcode === "EA") //No Operation
+			{
+				this.PC++;
+			}
+			//EC not working yet
+			else if(opcode === "EC") //Compare a byte in memory to the X reg & sets the Z flag if equal
+			{						 
+				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
+				var nextNext = parseInt(_Memory[(this.PC + 2)+0],16);
+				var addressH = (nextNext + nextCell);
+				var addressD = parseInt(addressH,16) + 0; //0=base
+				if(addressD >=0 && addressD <= _TotalMemory)
+				{
+					if(parseInt(_Memory[addressD]) === this.Xreg){this.Zflag = 1;}
+					else{this.Zflag = 0;}
+				}
+				else
+				{
+					krnTrace("Invalid memory access during AC. Program ended."); //halt system? //errors?
+				}	
+				this.PC++;
+			}
+			else if(opcode === "D0") //Branch X bytes if Z flag = 0
+			{
+				if(this.Zflag === 0)
+				{
+					var branchVal = parseInt(_Memory[(this.PC + 1)+0],16);
+					this.PC += branchVal;
+					if(this.PC > 255)
+					{
+						this.PC -= 256;
+					}
+					this.PC++;
+				}
+				else
+				{
+					this.PC += 2;
+				}
+			}
+
+			else if(opcode === "EE") //Increment the value of a byte
+			{
+				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
+				var nextNext = parseInt(_Memory[(this.PC + 2)+0],16);
+				var addressH = (nextNext + nextCell);
+				var addressD = parseInt(addressH,16) + 0; //0=base
+				if(addressD >=0 && addressD <= _TotalMemory)
+				{
+					var decimalOf = parseInt(_Memory[addressD], 16);
+					decimalOf++;
+					var hexOf = decimalOf.toString(16).toUpperCase();
+					if(hexOf.length === 1){hexOf = "0"+hexOf;}
+					_Memory[addressD] = hexOf;
+				}
+				else
+				{
+					krnTrace("Invalid memory access during AC. Program ended."); //halt system? //errors?
+				}	
+				this.PC++;
+			}
+			else if(opcode === "FF") //System Call
+			{						 //$01 in X reg = print the int stored in the Y reg	 
+				if(this.Xreg === 1)  //$02 in X reg = print the string stored at address in Y reg
+				{
+					var val = parseInt(this.Yreg).toString();
+					for(var i=0; i< val.length; i++)
+					{
+						_StdIn.putText(val.charAt(i));
+					}
+					_StdIn.advanceLine();
+				}
+				else if(this.Xreg === 2)
+				{
+					var addressD = 	parseInt(this.Yreg,16) + 0;	
+					var terminateString = "00";
+					var current = _Memory[addressD];
+					var keyCode = 0;
+					var ch = "";
+					while(current != terminateString)
+					{
+						keyCode = parseInt(current,16);
+						chr = String.fromCharCode(keyCode);
+						_StdIn.putText(chr);
+						addressD++;
+						current = _Memory[addressD];					
+					}
+					_StdIn.advanceLine();
+					_StdIn.putText(">");
+				}
+				this.PC++;
+			}
+			else if(opcode === "00") //Break (system call)
+			{
+				this.updateCPU;
+				this.updateAcc;
+				this.updateXreg;
+				this.updateYreg;
+				this.updateZflag;
+				console.log(parseInt(_Memory[(this.PC + 1)+0],16).toString());
+				
+				if (parseInt(_Memory[(this.PC + 1)+0],16).toString() === "0" 
+									&& parseInt(_Memory[(this.PC + 2)+0],16).toString() === "0")
+				{
+				_CPU.isExecuting = false;
+				}
+				else
+				{
+					this.PC++;
+				}
+			}
+			else{console.log(opcode); this.PC++;}
+		};
+		
+		
 }
