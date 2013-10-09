@@ -433,22 +433,21 @@ function shellLoad(args)
 	var isValid = (/^[0-9a-f]{2}( [0-9a-f]{2})*$/i.test(text));
 		//any 2 num or letter,( a space, any 2 num or letter)zero or more times, $=string end and case insensitive
 	
-
 	var arrayOpcodes = text.split(" ");
 	var currentOp = "";
 	
-	
-	//var pid = loadedArray[0];
-	
 	if (isValid)
 	{
-		_StdIn.putText("'"+text+"' is valid!");
+		_StdIn.putText("Input entered is valid.");
 	
 		var pid = _PID++; //increments the global _PID for the next load
 		var pc = 0;
 
 		var base = 0;
 		var limit = _TotalMemory;
+		
+		clearMemoryTable();
+		clearCPU();	
 		
 		for( var i = base; i < arrayOpcodes.length + base; i++)
 		{
@@ -469,7 +468,6 @@ function shellLoad(args)
 		_LoadedJobs[pid] = pid; 
 		
 		_StdIn.advanceLine();
-		//_StdIn.putText("Process with PID *unknown* added to memory.");
 		_StdIn.putText("Process with PID " + pid + " added to memory");
 		
 	}
@@ -528,14 +526,15 @@ function shellRun(args)
 	{
 		_StdIn.putText("Please enter a valid PID.");
 	}
-	else if ( parseInt(args) > _LoadedJobs.length-1 ) 
+	else if (parseInt(args) !== _LoadedJobs.length-1)  // parseInt(args) > _LoadedJobs.length-1 || 
 	{
-		_StdIn.putText("Invalid PID.");
+		console.log(_LoadedJobs.length-1);
+		_StdIn.putText("Invalid PID. Currently loaded program is at PID: " +(_LoadedJobs.length-1));
 	}
 	else
 	{
 		_StdIn.putText("Running...");
-		
+		clearCPU();
 		//run the code
 		_CPU.isExecuting = true;
 		

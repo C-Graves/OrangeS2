@@ -39,15 +39,17 @@ function Cpu() {
 		this.execute(this.fetch());
 		
 		//update CPU values in realtime
-		//updateCPUStatus();
-		this.updateCPU();
+		this.updatePC();
 		this.updateAcc();
 		this.updateXreg();
 		this.updateYreg();
 		this.updateZflag();
+		
+		try{ updateMemoryTable();}
+		catch(err){}//skip it
 	};
 		
-		this.updateCPU = function()
+		this.updatePC = function()
 		{
 			var cpuTable = document.getElementById("pcStatus").innerHTML=this.PC;
 		};
@@ -100,14 +102,13 @@ function Cpu() {
 			}
 			else if(opcode === "8D") //Store the accumulator in memory
 			{
-				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
-				var nextNext = parseInt(_Memory[(this.PC + 2)+0],16);
+				var nextCell = parseInt(_Memory[(this.PC + 1)+0]);
+				var nextNext = parseInt(_Memory[(this.PC + 2)+0]);
 				var addressH = (nextNext + nextCell);
 				var addressD = parseInt(addressH,16) + 0; //0=base
 				if(addressD >=0 && addressD <= _TotalMemory)
 				{
-					var accToHex = this.Acc.toString(16);
-					//accToHex = accToHex.toUppercase();
+					var accToHex = this.Acc.toString(16).toUpperCase();
 					if(accToHex.length === 1) {accToHex = "0" + accToHex;}
 					_Memory[addressD] = accToHex;
 				}
@@ -144,8 +145,8 @@ function Cpu() {
 			}
 			else if(opcode === "AE") //Load the X register from memory
 			{
-				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
-				var nextNext = parseInt(_Memory[(this.PC + 2)+0],16);
+				var nextCell = parseInt(_Memory[(this.PC + 1)+0]);
+				var nextNext = parseInt(_Memory[(this.PC + 2)+0]);
 				var addressH = (nextNext + nextCell);
 				var addressD = parseInt(addressH,16) + 0; //0=base
 				if(addressD >=0 && addressD <= _TotalMemory)
@@ -161,18 +162,20 @@ function Cpu() {
 			}
 			else if(opcode === "A0") //Load the Y register with a constant
 			{
-				this.Yreg = parseInt(_Memory[(this.PC + 1)+0],16);
+				//this.Yreg = parseInt(_Memory[(this.PC + 1)+0],16);
+				this.Yreg = parseInt(_Memory[(this.PC + 1)+0]);
 				this.PC++;
 			}
 			else if(opcode === "AC") //Load the Y register from memory
 			{
-				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
-				var nextNext = parseInt(_Memory[(this.PC + 2)+0],16);
+				var nextCell = parseInt(_Memory[(this.PC + 1)+0]);
+				var nextNext = parseInt(_Memory[(this.PC + 2)+0]);
 				var addressH = (nextNext + nextCell);
 				var addressD = parseInt(addressH,16) + 0; //0=base
 				if(addressD >=0 && addressD <= _TotalMemory)
 				{
-					this.Yreg = parseInt(_Memory[addressD],16);
+					//this.Yreg = parseInt(_Memory[addressD],16);
+					this.Yreg = parseInt(_Memory[addressD]);
 				}
 				else
 				{
@@ -187,8 +190,8 @@ function Cpu() {
 			//EC not working yet
 			else if(opcode === "EC") //Compare a byte in memory to the X reg & sets the Z flag if equal
 			{						 
-				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
-				var nextNext = parseInt(_Memory[(this.PC + 2)+0],16);
+				var nextCell = parseInt(_Memory[(this.PC + 1)+0]);
+				var nextNext = parseInt(_Memory[(this.PC + 2)+0]);
 				var addressH = (nextNext + nextCell);
 				var addressD = parseInt(addressH,16) + 0; //0=base
 				if(addressD >=0 && addressD <= _TotalMemory)
@@ -222,8 +225,8 @@ function Cpu() {
 
 			else if(opcode === "EE") //Increment the value of a byte
 			{
-				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
-				var nextNext = parseInt(_Memory[(this.PC + 2)+0],16);
+				var nextCell = parseInt(_Memory[(this.PC + 1)+0]);
+				var nextNext = parseInt(_Memory[(this.PC + 2)+0]);
 				var addressH = (nextNext + nextCell);
 				var addressD = parseInt(addressH,16) + 0; //0=base
 				if(addressD >=0 && addressD <= _TotalMemory)
@@ -273,13 +276,11 @@ function Cpu() {
 			}
 			else if(opcode === "00") //Break (system call)
 			{
-				this.updateCPU;
+				this.updatePC;
 				this.updateAcc;
 				this.updateXreg;
 				this.updateYreg;
 				this.updateZflag;
-				console.log(parseInt(_Memory[(this.PC + 1)+0],16).toString());
-				
 				if (parseInt(_Memory[(this.PC + 1)+0],16).toString() === "0" 
 									&& parseInt(_Memory[(this.PC + 2)+0],16).toString() === "0")
 				{
@@ -290,7 +291,7 @@ function Cpu() {
 					this.PC++;
 				}
 			}
-			else{console.log(opcode); this.PC++;}
+			else{this.PC++;}
 		};
 		
 		

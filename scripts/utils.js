@@ -131,4 +131,34 @@ function makeMemoryTable() //automagically
 	}
 	_MemoryDisplayCells = cells;
 }
+
+function updateMemoryTable()
+{
+	var i = 0;
+	for(var row = 0; row<96; row++)
+	{
+		for(var coll = 1; coll<9; coll++)
+		{
+			_MemoryDisplayCells[row][coll].innerHTML = _Memory[i];
+			i++;
+		}
+	}	
+}
+
  
+ function clearMemoryTable()
+{
+	for( var i = 0; i < 256; i++)
+	{
+		_Memory[i] = "00";
+	}
+}
+
+function clearCPU()
+{
+	_CPU.PC = 0;
+	_CPU.Acc = 0;
+	_CPU.Xreg = 0;
+	_CPU.Yreg = 0;
+	_CPU.Zflag = 0;
+}

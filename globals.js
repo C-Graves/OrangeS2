@@ -21,6 +21,8 @@ var TIMER_IRQ = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (interrupt prio
 var KEYBOARD_IRQ = 1;  
 
 var _TotalMemory = 255; //256 bytes
+var _base = 0;
+var _limit = _TotalMemory;
 
 //
 // Global Variables
@@ -38,6 +40,7 @@ var _DefaultFontSize = 13;
 var _FontHeightMargin = 4;        // Additional space added to font size when advancing a line.
 
 var _Memory = null;
+var _MemoryDisplayCells = null;
 var _PID = 0;
 var _LoadedJobs = null;
 
