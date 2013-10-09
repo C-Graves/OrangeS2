@@ -187,7 +187,6 @@ function Cpu() {
 			{
 				this.PC++;
 			}
-			//EC not working yet
 			else if(opcode === "EC") //Compare a byte in memory to the X reg & sets the Z flag if equal
 			{						 
 				var nextCell = parseInt(_Memory[(this.PC + 1)+0]);
