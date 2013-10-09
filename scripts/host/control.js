@@ -95,6 +95,8 @@ function hostBtnStartOS_click(btn)
 	
 	_Memory = new memory();
 	
+	_MemoryManager = new memoryManager();
+	
 	_LoadedJobs = new Array();
 }
 

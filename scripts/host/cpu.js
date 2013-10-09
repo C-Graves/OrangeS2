@@ -81,16 +81,16 @@ function Cpu() {
 		{
 			if(opcode === "A9") //Load accumulator with a constant
 			{
-				this.Acc = parseInt(_Memory[(this.PC + 1)+0],16);
+				this.Acc = parseInt(_MemoryManager.getNext(),16); ////here
 				this.PC++;
 			}
 			else if(opcode === "AD") //Load the accumulator in memory
 			{
-				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
-				var nextNext = parseInt(_Memory[(this.PC + 1)+0],16);
+				var nextCell = parseInt(_MemoryManager.getNext(),16);
+				var nextNext = parseInt(_MemoryManager.getNext(),16);
 				var addressH = (nextNext + nextCell);
-				var addressD = parseInt(addressH,16) + 0; //0=base
-				if(addressD >=0 && addressD <= _TotalMemory)
+				var addressD = _MemoryManager.translateToDec(addressH); 
+				if(_MemoryManager.isValid(addressD))
 				{
 					this.Acc = parseInt(_Memory[addressD]);
 				}
@@ -102,11 +102,11 @@ function Cpu() {
 			}
 			else if(opcode === "8D") //Store the accumulator in memory
 			{
-				var nextCell = parseInt(_Memory[(this.PC + 1)+0]);
-				var nextNext = parseInt(_Memory[(this.PC + 2)+0]);
+				var nextCell = parseInt(_MemoryManager.getNext());
+				var nextNext = parseInt(_MemoryManager.getNext());
 				var addressH = (nextNext + nextCell);
-				var addressD = parseInt(addressH,16) + 0; //0=base
-				if(addressD >=0 && addressD <= _TotalMemory)
+				var addressD = _MemoryManager.translateToDec(addressH); 
+				if(_MemoryManager.isValid(addressD))
 				{
 					var accToHex = this.Acc.toString(16).toUpperCase();
 					if(accToHex.length === 1) {accToHex = "0" + accToHex;}
@@ -120,11 +120,11 @@ function Cpu() {
 			}
 			else if(opcode === "6D") //Add with carry
 			{						 // adds content of address to the contents of acc- results in acc
-				var nextCell = parseInt(_Memory[(this.PC + 1)+0],16);
-				var nextNext = parseInt(_Memory[(this.PC + 1)+0],16);
+				var nextCell = parseInt(_MemoryManager.getNext(),16);
+				var nextNext = parseInt(_MemoryManager.getNext(),16);
 				var addressH = (nextNext + nextCell);
-				var addressD = parseInt(addressH,16) + 0; //0=base
-				if(addressD >=0 && addressD <= _TotalMemory)
+				var addressD = _MemoryManager.translateToDec(addressH); 
+				if(_MemoryManager.isValid(addressD))
 				{
 					this.Acc = this.Acc + parseInt(_Memory[addressD],16);
 					
@@ -140,16 +140,16 @@ function Cpu() {
 			}
 			else if(opcode === "A2") //Load the X register with a constant
 			{
-				this.Xreg = parseInt(_Memory[(this.PC + 1)+0],16);
+				this.Xreg = parseInt(_MemoryManager.getNext(),16);
 				this.PC++;
 			}
 			else if(opcode === "AE") //Load the X register from memory
 			{
-				var nextCell = parseInt(_Memory[(this.PC + 1)+0]);
-				var nextNext = parseInt(_Memory[(this.PC + 2)+0]);
+				var nextCell = parseInt(_MemoryManager.getNext());
+				var nextNext = parseInt(_MemoryManager.getNext());
 				var addressH = (nextNext + nextCell);
-				var addressD = parseInt(addressH,16) + 0; //0=base
-				if(addressD >=0 && addressD <= _TotalMemory)
+				var addressD = _MemoryManager.translateToDec(addressH); 
+				if(_MemoryManager.isValid(addressD))
 				{
 					this.Xreg = parseInt(_Memory[addressD],16);
 				}
@@ -163,16 +163,16 @@ function Cpu() {
 			else if(opcode === "A0") //Load the Y register with a constant
 			{
 				//this.Yreg = parseInt(_Memory[(this.PC + 1)+0],16);
-				this.Yreg = parseInt(_Memory[(this.PC + 1)+0]);
+				this.Yreg = parseInt(_MemoryManager.getNext());
 				this.PC++;
 			}
 			else if(opcode === "AC") //Load the Y register from memory
 			{
-				var nextCell = parseInt(_Memory[(this.PC + 1)+0]);
-				var nextNext = parseInt(_Memory[(this.PC + 2)+0]);
+				var nextCell = parseInt(_MemoryManager.getNext());
+				var nextNext = parseInt(_MemoryManager.getNext());
 				var addressH = (nextNext + nextCell);
-				var addressD = parseInt(addressH,16) + 0; //0=base
-				if(addressD >=0 && addressD <= _TotalMemory)
+				var addressD = _MemoryManager.translateToDec(addressH); 
+				if(_MemoryManager.isValid(addressD))
 				{
 					//this.Yreg = parseInt(_Memory[addressD],16);
 					this.Yreg = parseInt(_Memory[addressD]);
@@ -189,11 +189,11 @@ function Cpu() {
 			}
 			else if(opcode === "EC") //Compare a byte in memory to the X reg & sets the Z flag if equal
 			{						 
-				var nextCell = parseInt(_Memory[(this.PC + 1)+0]);
-				var nextNext = parseInt(_Memory[(this.PC + 2)+0]);
+				var nextCell = parseInt(_MemoryManager.getNext());
+				var nextNext = parseInt(_MemoryManager.getNext());
 				var addressH = (nextNext + nextCell);
-				var addressD = parseInt(addressH,16) + 0; //0=base
-				if(addressD >=0 && addressD <= _TotalMemory)
+				var addressD = _MemoryManager.translateToDec(addressH); 
+				if(_MemoryManager.isValid(addressD))
 				{
 					if(parseInt(_Memory[addressD]) === this.Xreg){this.Zflag = 1;}
 					else{this.Zflag = 0;}
@@ -208,7 +208,7 @@ function Cpu() {
 			{
 				if(this.Zflag === 0)
 				{
-					var branchVal = parseInt(_Memory[(this.PC + 1)+0],16);
+					var branchVal = parseInt(_MemoryManager.getNext(),16);
 					this.PC += branchVal;
 					if(this.PC > 255)
 					{
@@ -224,11 +224,11 @@ function Cpu() {
 
 			else if(opcode === "EE") //Increment the value of a byte
 			{
-				var nextCell = parseInt(_Memory[(this.PC + 1)+0]);
-				var nextNext = parseInt(_Memory[(this.PC + 2)+0]);
+				var nextCell = parseInt(_MemoryManager.getNext());
+				var nextNext = parseInt(_MemoryManager.getNext());
 				var addressH = (nextNext + nextCell);
-				var addressD = parseInt(addressH,16) + 0; //0=base
-				if(addressD >=0 && addressD <= _TotalMemory)
+				var addressD = _MemoryManager.translateToDec(addressH); 
+				if(_MemoryManager.isValid(addressD))
 				{
 					var decimalOf = parseInt(_Memory[addressD], 16);
 					decimalOf++;
@@ -280,8 +280,8 @@ function Cpu() {
 				this.updateXreg;
 				this.updateYreg;
 				this.updateZflag;
-				if (parseInt(_Memory[(this.PC + 1)+0],16).toString() === "0" 
-									&& parseInt(_Memory[(this.PC + 2)+0],16).toString() === "0")
+				if (parseInt(_MemoryManager.getNext(),16).toString() === "0" 
+									&& parseInt(_MemoryManager.getNext(),16).toString() === "0")
 				{
 				_CPU.isExecuting = false;
 				}

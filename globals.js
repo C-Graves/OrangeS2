@@ -40,6 +40,7 @@ var _DefaultFontSize = 13;
 var _FontHeightMargin = 4;        // Additional space added to font size when advancing a line.
 
 var _Memory = null;
+var _MemoryManager = null;
 var _MemoryDisplayCells = null;
 var _PID = 0;
 var _LoadedJobs = null;

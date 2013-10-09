@@ -528,7 +528,6 @@ function shellRun(args)
 	}
 	else if (parseInt(args) !== _LoadedJobs.length-1)  // parseInt(args) > _LoadedJobs.length-1 || 
 	{
-		console.log(_LoadedJobs.length-1);
 		_StdIn.putText("Invalid PID. Currently loaded program is at PID: " +(_LoadedJobs.length-1));
 	}
 	else
@@ -537,9 +536,6 @@ function shellRun(args)
 		clearCPU();
 		//run the code
 		_CPU.isExecuting = true;
-		
 	}
-
-
 }
 
