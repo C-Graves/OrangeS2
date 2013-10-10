@@ -48,7 +48,7 @@ function Cpu() {
 		try{ updateMemoryTable();}
 		catch(err){}//skip it
 	};
-		
+		//updates CPU in CPU Status table
 		this.updatePC = function()
 		{
 			var cpuTable = document.getElementById("pcStatus").innerHTML=this.PC;
@@ -74,11 +74,11 @@ function Cpu() {
 		
 		this.fetch = function()
 		{
-			return _Memory[this.PC + 0]; //0 === the base of the program
+			return _Memory[this.PC + 0]; //0 === the base of the program -change later
 		};
 		
 		this.execute = function(opcode)  //something is still not quite right, but it is able to produce the right output at this time
-		{									//has to do with being stored into 4 instead of 4B, for example
+		{								 //has to do with being stored into 4 instead of 4B, for example
 			if(opcode === "A9") //Load accumulator with a constant
 			{
 				this.Acc = parseInt(_MemoryManager.getNext(),16);
@@ -272,7 +272,6 @@ function Cpu() {
 						current = _Memory[addressD];
 					}
 					_StdIn.advanceLine();
-					//_StdIn.putText(">");
 				}
 				this.PC++;
 			}
@@ -300,3 +299,4 @@ function Cpu() {
 		
 		
 }
+

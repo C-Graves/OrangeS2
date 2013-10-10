@@ -36,6 +36,7 @@ function hostInit()
 	// Set focus on the start button.
 	document.getElementById("btnStartOS").focus();
    
+	//Set these up here, otherwise glados wouldn't work
 	_Memory = new Memory();
 	_MemoryManager = new memoryManager();
 	makeMemoryTable();
@@ -96,12 +97,10 @@ function hostBtnStartOS_click(btn)
     // .. and call the OS Kernel Bootstrap routine.
     krnBootstrap();
 	
-	//My code wouldn't work without removing these from here and moving them above to init
+	//My code wouldn't work with glados while it was here. moved them above glados in code (above)
 	//_Memory = new Memory();
 	//if(_Memory){console.log("true");}
-	
 	//_MemoryManager = new memoryManager();
-	
 	//_LoadedJobs = new Array();
 }
 

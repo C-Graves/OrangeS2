@@ -1,6 +1,6 @@
 //memoryManager.js
 
-function memoryManager()
+function memoryManager()  //basic helper functions to keep code clean-er when dealing with memory
 {
 	this.getBaseValue = function()
 	{

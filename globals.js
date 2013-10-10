@@ -11,7 +11,7 @@
 //
 // Global CONSTANTS
 //
-var APP_NAME = "OrangeS";  // Oranges & OS, together.
+var APP_NAME = "OrangeS";  // Oranges & OS, together....get it? OS, separated but implied...no?...okay oranges as the background then.
 var APP_VERSION = "0.505";  // SOS
 
 var CPU_CLOCK_INTERVAL = 100;   // This is in ms, or milliseconds, so 1000 = 1 second.

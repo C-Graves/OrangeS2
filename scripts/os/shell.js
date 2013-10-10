@@ -446,7 +446,6 @@ function shellLoad(args)
 		var base = 0;
 		var limit = _TotalMemory;
 		
-		//clearMemoryTable();
 		clearCPU();	
 		
 		for( var i = base; i < arrayOpcodes.length + base; i++)
@@ -454,7 +453,8 @@ function shellLoad(args)
 			currentOp = arrayOpcodes[i - base];
 			_Memory[i] = currentOp.toUpperCase();		
 		}
-		for(var i = arrayOpcodes.length + base; i< limit+1; i++)
+		
+		for(var i = arrayOpcodes.length + base; i< limit+1; i++) //this resets any cells after loaded program ("clearMemoryTable" equivalent)
 		{
 			_Memory[i] = "00";
 		}
@@ -536,7 +536,7 @@ function shellRun(args)
 	{
 		_StdIn.putText("Please enter a valid PID.");
 	}
-	else if (parseInt(args) !== _LoadedJobs.length-1)  // parseInt(args) > _LoadedJobs.length-1 || 
+	else if (parseInt(args) !== _LoadedJobs.length-1)  //only runs the currently loaded program in memory
 	{
 		_StdIn.putText("Invalid PID. Currently loaded program is at PID: " +(_LoadedJobs.length-1));
 	}

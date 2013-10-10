@@ -9,8 +9,7 @@
 
 function CLIconsole() {
     // Properties
-	
-	
+		
     this.CurrentFont      = _DefaultFontFamily;
     this.CurrentFontSize  = _DefaultFontSize;
     this.CurrentXPosition = 0;
@@ -61,7 +60,7 @@ function CLIconsole() {
 				}
            }
 		   else if (chr == String.fromCharCode(17)) // up arrow
-		   {
+		   {										//recalls all previous commands entered
 			
 			if(this.recalledBuffer)
 			{
@@ -78,9 +77,9 @@ function CLIconsole() {
 			}
 		   }
 		   
-		   else if (chr == String.fromCharCode(18)) // up arrow
-		   {
-			if(this.recalledBuffer)
+		   else if (chr == String.fromCharCode(18)) // down arrow
+		   {										// if at oldest command (from up-arrow), goes back through 
+			if(this.recalledBuffer)					// from oldest to newest entered command
 			{
 				if (i < this.recalledBuffer.length-1){
 					while(this.buffer.length > 0)
@@ -159,7 +158,7 @@ function CLIconsole() {
 	   {	this.scroll(1);}
     };
 	
-	this.scroll = function(lines) {
+	this.scroll = function(lines) {   //redraws canvas, but adjusts up to have a new line to enter a command onto
        
 		if (lines == null) 
 		{lines = 1;}
@@ -179,14 +178,12 @@ function CLIconsole() {
 	
 	this.bsod = function() 
 	{
-		//this.clearScreen();
 	   _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height); 
 		var c=document.getElementById("display");
 		var ctx=c.getContext("2d");
-		ctx.fillStyle="#FF8040";
+		ctx.fillStyle="#FF8040"; //not blue
 		ctx.fillRect(0,0,_Canvas.width,_Canvas.height+4);
-	   
-		
+
     };
 	
 	

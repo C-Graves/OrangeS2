@@ -83,8 +83,7 @@ function krnKbdDispatchKeyPress(params)
 	
 	else if (  (keyCode == 32)                     ||   // space
 			   (keyCode == 13)					   ||	// enter
-               (keyCode == 8)					   )//||	// backspace
-			   //(keyCode == 38)						 )	// up arrow key		   
+               (keyCode == 8)					   )	// backspace	   
 	{
 			chr = String.fromCharCode(keyCode);
 			_KernelInputQueue.enqueue(chr); 
@@ -154,7 +153,7 @@ function krnKbdDispatchKeyPress(params)
 		if (keyCode != 16)
 		{
 		krnTrace("Invalid Key Press: Please try again.");
-		//krnTrapError("That was not an accepted key press. Goodbye.");
-		}
+		//krnTrapError("That was not an accepted key press. Goodbye."); //I didn't do it, but thought about doing it
+		}																//I'm glad I didn't, since it was on iProject1's list of things Alan hates
 	}
 }

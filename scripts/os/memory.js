@@ -1,10 +1,10 @@
 //for Memory
 
-function Memory()
+function Memory() 
 {
 	var memoryArray = new Array();
 	
-	for(i = 0; i<_TotalMemory; i++) //+1 cuz undefined when memory rewritten
+	for(i = 0; i<_TotalMemory; i++) //+1 cuz undefined when memory rewritten; it was +1, but this is not giving me a problem w/o it...
 	{
 		memoryArray[i] = "00";
 	}
@@ -42,7 +42,7 @@ function makeMemoryTable() //automagically
 	_MemoryDisplayCells = cells;
 }
 
-function updateMemoryTable()
+function updateMemoryTable() //updates memory table if/when different values should be displayed
 {
 	var i = 0;
 	for(var row = 0; row<96; row++)
@@ -56,17 +56,7 @@ function updateMemoryTable()
 }
 
  
- function clearMemoryTable()
-{
-	var i = 0;
-	for(var row = 0; row<96; row++)
-	{
-		for(var coll = 1; coll<9; coll++)
-		{
-		_MemoryDisplayCells[row][coll].innerHTML = "00";
-		}
-	}
-}
+//I don't think I was using the clearMemoryTable function anyway
 
 function clearCPU()
 {
