@@ -446,13 +446,17 @@ function shellLoad(args)
 		var base = 0;
 		var limit = _TotalMemory;
 		
-		clearMemoryTable();
+		//clearMemoryTable();
 		clearCPU();	
 		
 		for( var i = base; i < arrayOpcodes.length + base; i++)
 		{
-			opcode = arrayOpcodes[i - base];
-			_Memory[i] = opcode.toUpperCase();			
+			currentOp = arrayOpcodes[i - base];
+			_Memory[i] = currentOp.toUpperCase();		
+		}
+		for(var i = arrayOpcodes.length + base; i< limit+1; i++)
+		{
+			_Memory[i] = "00";
 		}
 		
 		var index = 0;
@@ -471,7 +475,13 @@ function shellLoad(args)
 		_StdIn.putText("Process with PID " + pid + " added to memory");
 		
 	}
-	else {_StdIn.putText("Invalid. Please check your User Program Input.");}
+	else 
+	{
+		_StdIn.putText("Invalid. Please check your User Program Input.");
+		text = "";
+		arrayOpcodes = "";
+		currentOp = "";
+	}
 
 	
 }

@@ -34,9 +34,12 @@ function hostInit()
 	document.getElementById("taLog").value="";
 
 	// Set focus on the start button.
-   document.getElementById("btnStartOS").focus();
+	document.getElementById("btnStartOS").focus();
    
-   makeMemoryTable();
+	_Memory = new Memory();
+	_MemoryManager = new memoryManager();
+	makeMemoryTable();
+	_LoadedJobs = new Array();
 
    // Check for our testing and enrichment core.
    if (typeof Glados === "function") {
@@ -93,11 +96,13 @@ function hostBtnStartOS_click(btn)
     // .. and call the OS Kernel Bootstrap routine.
     krnBootstrap();
 	
-	_Memory = new memory();
+	//My code wouldn't work without removing these from here and moving them above to init
+	//_Memory = new Memory();
+	//if(_Memory){console.log("true");}
 	
-	_MemoryManager = new memoryManager();
+	//_MemoryManager = new memoryManager();
 	
-	_LoadedJobs = new Array();
+	//_LoadedJobs = new Array();
 }
 
 function hostBtnHaltOS_click(btn)

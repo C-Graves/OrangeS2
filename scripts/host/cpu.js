@@ -77,11 +77,11 @@ function Cpu() {
 			return _Memory[this.PC + 0]; //0 === the base of the program
 		};
 		
-		this.execute = function(opcode)
-		{
+		this.execute = function(opcode)  //something is still not quite right, but it is able to produce the right output at this time
+		{									//has to do with being stored into 4 instead of 4B, for example
 			if(opcode === "A9") //Load accumulator with a constant
 			{
-				this.Acc = parseInt(_MemoryManager.getNext(),16); ////here
+				this.Acc = parseInt(_MemoryManager.getNext(),16);
 				this.PC++;
 			}
 			else if(opcode === "AD") //Load the accumulator in memory
@@ -102,13 +102,16 @@ function Cpu() {
 			}
 			else if(opcode === "8D") //Store the accumulator in memory
 			{
-				var nextCell = parseInt(_MemoryManager.getNext());
-				var nextNext = parseInt(_MemoryManager.getNext());
+				var nextCell = parseInt(_MemoryManager.getNext());//
+				var nextNext = parseInt(_MemoryManager.getNext());//
+				
 				var addressH = (nextNext + nextCell);
+				addressH = addressH.toString();
 				var addressD = _MemoryManager.translateToDec(addressH); 
 				if(_MemoryManager.isValid(addressD))
 				{
 					var accToHex = this.Acc.toString(16).toUpperCase();
+					//var accToHex = this.Acc;//.toString().toUpperCase();
 					if(accToHex.length === 1) {accToHex = "0" + accToHex;}
 					_Memory[addressD] = accToHex;
 				}
@@ -128,7 +131,7 @@ function Cpu() {
 				{
 					this.Acc = this.Acc + parseInt(_Memory[addressD],16);
 					
-					var accToHex = this.Acc.toString(16).toUppercase();
+					var accToHex = this.Acc.toString(16).toUpperCase();
 					if(accToHex.length === 1) {accToHex = "0" + accToHex;}
 					_Memory[addressD] = accToHex;
 				}
@@ -140,7 +143,8 @@ function Cpu() {
 			}
 			else if(opcode === "A2") //Load the X register with a constant
 			{
-				this.Xreg = parseInt(_MemoryManager.getNext(),16);
+				//this.Xreg = parseInt(_MemoryManager.getNext(),16);
+				this.Xreg = parseInt(_MemoryManager.getNext());
 				this.PC++;
 			}
 			else if(opcode === "AE") //Load the X register from memory
@@ -151,7 +155,7 @@ function Cpu() {
 				var addressD = _MemoryManager.translateToDec(addressH); 
 				if(_MemoryManager.isValid(addressD))
 				{
-					this.Xreg = parseInt(_Memory[addressD],16);
+					this.Xreg = parseInt(_Memory[addressD],16); //maybe right
 				}
 				else
 				{
@@ -163,7 +167,7 @@ function Cpu() {
 			else if(opcode === "A0") //Load the Y register with a constant
 			{
 				//this.Yreg = parseInt(_Memory[(this.PC + 1)+0],16);
-				this.Yreg = parseInt(_MemoryManager.getNext());
+				this.Yreg =(_Memory[(this.PC + 1)+0]);
 				this.PC++;
 			}
 			else if(opcode === "AC") //Load the Y register from memory
@@ -174,8 +178,7 @@ function Cpu() {
 				var addressD = _MemoryManager.translateToDec(addressH); 
 				if(_MemoryManager.isValid(addressD))
 				{
-					//this.Yreg = parseInt(_Memory[addressD],16);
-					this.Yreg = parseInt(_Memory[addressD]);
+					this.Yreg = parseInt(_Memory[addressD],16);
 				}
 				else
 				{
@@ -266,10 +269,10 @@ function Cpu() {
 						chr = String.fromCharCode(keyCode);
 						_StdIn.putText(chr);
 						addressD++;
-						current = _Memory[addressD];					
+						current = _Memory[addressD];
 					}
 					_StdIn.advanceLine();
-					_StdIn.putText(">");
+					//_StdIn.putText(">");
 				}
 				this.PC++;
 			}
@@ -283,6 +286,7 @@ function Cpu() {
 				if (parseInt(_MemoryManager.getNext(),16).toString() === "0" 
 									&& parseInt(_MemoryManager.getNext(),16).toString() === "0")
 				{
+				_StdIn.putText(">");
 				_CPU.isExecuting = false;
 				}
 				else
@@ -291,6 +295,7 @@ function Cpu() {
 				}
 			}
 			else{this.PC++;}
+			
 		};
 		
 		

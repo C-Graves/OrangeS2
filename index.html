@@ -17,14 +17,14 @@
    <script type="text/javascript" src="scripts/host/cpu.js"></script>
 
    <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
-   <script type="text/javascript" src="scripts/os/memory.js"></script>
-   <script type="text/javascript" src="scripts/os/memoryManager.js"></script>
    <script type="text/javascript" src="scripts/os/interrupt.js"></script>
    <script type="text/javascript" src="scripts/os/canvastext.js"></script>	
    <script type="text/javascript" src="scripts/os/console.js"></script>	
    <script type="text/javascript" src="scripts/os/deviceDriver.js"></script>
    <script type="text/javascript" src="scripts/os/deviceDriverKeyboard.js"></script>
    <script type="text/javascript" src="scripts/os/queue.js"></script>
+   <script type="text/javascript" src="scripts/os/memory.js"></script>
+   <script type="text/javascript" src="scripts/os/memoryManager.js"></script>
    <script type="text/javascript" src="scripts/os/shell.js"></script>
    <script type="text/javascript" src="scripts/os/kernel.js"></script>
 
@@ -36,7 +36,7 @@
 <body onload="hostInit();">
 
 <div id="divMain" style="width:100%;">
-	<table id="buttonStatus" style="background-color:#FF8040;">
+	<table id="buttonStatus">
 
 	 <td id="divButtonBar">
       <input type="button"
@@ -65,8 +65,8 @@
              tabindex="2"
              onclick="hostBtnReset_click(this);">
 	  </td>		 
-	  	<td id="clock" tabindex="4" style="background-color:#FF8040;"> Time & Date: </td>
-		<td id="statusText" tabindex="5" style="background-color:#FF8040;">Status: </td>
+	  	<td id="clock" tabindex="4" style="background-color:#ff8040;"> Time & Date: </td>
+		<td id="statusText" tabindex="5" style="background-color:#ff8040;">Status: </td>
  
 	</table>
 </div>
@@ -80,7 +80,7 @@
    </div>
 
    <div id="divLog" style="margin-left:520px;">
-      <label style="background-color:#FF8040;font-weight:bold;">
+      <label style="background-color:#ff8040;font-weight:bold;">
          Log
          <br>
          <textarea name="taLog"
@@ -92,7 +92,7 @@
    </div>
 
    <div id="divUserProgramInput" style="margin-left:520px;">
-      <label style="background-color:#FF8040;font-weight:bold;">
+      <label style="background-color:#ff8040;font-weight:bold;">
          User Program Input
          <br>
          <textarea name="taProgramInput"
@@ -104,7 +104,7 @@
    </div>
    
     <div id="memorySpot">
-	<label style="background-color:#FF8040;font-weight:bold;">
+	<label style="background-color:#ff8040;font-weight:bold;">
 		Memory Table
 		<br>
 		<table id="memoryTable" style="margin:4px; width:500px; height:500px; float:left; background-color:#FF8040;" border="1">		

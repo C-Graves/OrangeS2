@@ -9,7 +9,9 @@ function memoryManager()
 
 	this.getNext = function()
 	{
-		return _Memory[(++_CPU.PC)+ this.getBaseValue()];
+		var nextest = (++_CPU.PC);
+		return _Memory[nextest+ this.getBaseValue()];
+		
 	}
 
 	this.isValid = function(address)

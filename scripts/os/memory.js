@@ -1,16 +1,13 @@
 //for Memory
 
-
-//for memory (move from here?)
-function memory()
+function Memory()
 {
 	var memoryArray = new Array();
 	
-	for(i = 0; i<_TotalMemory+1; i++) //+1 cuz undefined when memory rewritten
+	for(i = 0; i<_TotalMemory; i++) //+1 cuz undefined when memory rewritten
 	{
 		memoryArray[i] = "00";
 	}
-	
 	return memoryArray;
 }
 
@@ -38,7 +35,7 @@ function makeMemoryTable() //automagically
 				else{pos="$"+pos;}
 				cells[i][j].innerHTML = (pos);
 			}
-			else {cells[i][j].innerHTML = "--";}
+			else {cells[i][j].innerHTML = "00";}
 			rows[rows.length-1].appendChild(cells[i][j]);
 		}
 	}
@@ -61,9 +58,13 @@ function updateMemoryTable()
  
  function clearMemoryTable()
 {
-	for( var i = 0; i < 256; i++)
+	var i = 0;
+	for(var row = 0; row<96; row++)
 	{
-		_Memory[i] = "00";
+		for(var coll = 1; coll<9; coll++)
+		{
+		_MemoryDisplayCells[row][coll].innerHTML = "00";
+		}
 	}
 }
 
