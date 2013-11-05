@@ -27,8 +27,6 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 	};
 	
 	
-	
-	
 	this.getBaseValue = function()
 	{
 		return _CurrentProcess.base;
@@ -55,42 +53,44 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 	
 	this.openMemLocExists = function()
 	{
-		var loc0Avail = this.memoryTable.loc0.open;
-		var loc1Avail = this.memoryTable.loc1.open;
-		var loc2Avail = this.memoryTable.loc2.open;
+		var loc0Avail = this.memoryTable.loc0.empty;
+		var loc1Avail = this.memoryTable.loc1.empty;
+		var loc2Avail = this.memoryTable.loc2.empty;
 		
+		console.log((loc0Avail));
 		return (loc0Avail || loc1Avail || loc2Avail);
+		
 	}
 	
 	this.getOpenMemLoc = function()
 	{
-		if(_MemoryManager.memoryTable.loc0.open == true) {return(_MemoryManager.memoryTable.loc0);}
-		else if (_MemoryManager.memoryTable.loc1.open == true) {return(_MemoryManager.memoryTable.loc1);}
-		else if (_MemoryManager.memoryTable.loc2.open == true) {return(_MemoryManager.memoryTable.loc2);}
+		if(_MemoryManager.memoryTable.loc0.empty == true) {return(_MemoryManager.memoryTable.loc0);}
+		else if (_MemoryManager.memoryTable.loc1.empty == true) {return(_MemoryManager.memoryTable.loc1);}
+		else if (_MemoryManager.memoryTable.loc2.empty == true) {return(_MemoryManager.memoryTable.loc2);}
 		else {return null;}
 	}
 	
 	this.setAvail = function(memloc)
 	{
-		var loc0Avail = this.memoryTable.loc0.open;
-		var loc1Avail = this.memoryTable.loc1.open;
-		var loc2Avail = this.memoryTable.loc2.open;
+		var loc0Avail = this.memoryTable.loc0.empty;
+		var loc1Avail = this.memoryTable.loc1.empty;
+		var loc2Avail = this.memoryTable.loc2.empty;
 		
-		if(memloc = 0)
+		if(memloc == 0)
 		{
-		if (loc0Avail = loc0Avail) { this.memoryTable.loc0.open = false; }
-		else{this.memoryTable.loc0.open = false;}
+			if (loc0Avail = loc0Avail) { this.memoryTable.loc0.empty = false; }
+			else{this.memoryTable.loc0.empty = true;}
 		}
 		
-		else if(memloc = 1)
+		else if(memloc == 1)
 		{
-		if (loc1Avail = loc1Avail) { this.memoryTable.loc1.open = false; }
-		else{this.memoryTable.loc1.open = false;}
+			if (loc1Avail = loc1Avail) { this.memoryTable.loc1.empty = false; }
+			else{this.memoryTable.loc1.empty = true;}
 		}
-		else if(memloc = 2)
+		else if(memloc == 2)
 		{
-		if (loc2Avail = loc2Avail) { this.memoryTable.loc2.open = false; }
-		else{this.memoryTable.loc2.open = false;}
+			if (loc2Avail = loc2Avail) { this.memoryTable.loc2.empty = false; }
+			else{this.memoryTable.loc2.empty = true;}
 		}
 		else{}//do nothing
 

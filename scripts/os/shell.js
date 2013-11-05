@@ -436,17 +436,35 @@ function shellLoad(args)
 	var arrayOpcodes = text.split(" ");
 	var currentOp = "";
 	
-	if (isValid)
+	
+	
+	if (isValid && arrayOpcodes.length < _MemoryBlockSize)
 	{
 		_StdIn.putText("Input entered is valid.");
 	
-		var pid = _PID++; //increments the global _PID for the next load
-		var pc = 0;
+		//var process = newProcess(); 		
+		//var pc = 0;
 
-		var base = 0;
-		var limit = _TotalMemory;
+		var base;
+		var limit;
+		var slot;
+		var pid = 0;
 		
-		clearCPU();	
+		var memLocation = _MemoryManager.getOpenMemLoc();
+		console.log(memLocation);
+		console.log(memLocation.memloc);
+		
+		if(memLocation)
+		{
+			_MemoryManager.setAvail(memLocation.memloc);
+			base = memLocation.base;
+			limit = memLocation.limit;
+			slot = memLocation.memloc;
+			pid = _PID++; //increments the global _PID for the next load
+		}
+		else{} //saved to disk, todo
+		
+		//clearCPU();	//?
 		
 		for( var i = base; i < arrayOpcodes.length + base; i++)
 		{
@@ -460,7 +478,7 @@ function shellLoad(args)
 		}
 		
 		var index = 0;
-		for(var row=0; row<32; row++)
+		for(var row=0; row<96; row++)
 		{
 			for(var coll=1; coll<9; coll++)
 			{
@@ -536,13 +554,14 @@ function shellRun(args)
 	{
 		_StdIn.putText("Please enter a valid PID.");
 	}
-	else if (parseInt(args) !== _LoadedJobs.length-1)  //only runs the currently loaded program in memory
-	{
-		_StdIn.putText("Invalid PID. Currently loaded program is at PID: " +(_LoadedJobs.length-1));
-	}
+	//else if (parseInt(args) !== _LoadedJobs.length-1)  //only runs the currently loaded program in memory
+	//{
+	//	_StdIn.putText("Invalid PID. Currently loaded program is at PID: " +(_LoadedJobs.length-1));
+	//}
 	else
 	{
 		_StdIn.putText("Running...");
+		_CurrentProcess = _LoadedJobs[args];
 		clearCPU();
 		//run the code
 		_CPU.isExecuting = true;

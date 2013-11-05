@@ -18,7 +18,7 @@ function makeMemoryTable() //automagically
 	var rows = [];
 	var cells = [];
 	
-	for( var i = 0; i < 32; i++ )
+	for( var i = 0; i < 96; i++ ) //3 sections 32*3
 	{
 		rows[i] = memoryTable.insertRow(i);
 		cells[i] = [];

@@ -44,6 +44,7 @@ var _MemoryManager = null;
 var _MemoryDisplayCells = null;
 var _PID = 0;
 var _LoadedJobs = null;
+var _CurrentProcess = null;
 
 // Default the OS trace to be on.
 var _Trace = true;
