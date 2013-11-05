@@ -300,3 +300,13 @@ function Cpu() {
 		
 }
 
+
+function clearCPU()
+{
+	_CPU.PC = 0;
+	_CPU.Acc = 0;
+	_CPU.Xreg = 0;
+	_CPU.Yreg = 0;
+	_CPU.Zflag = 0;
+}
+

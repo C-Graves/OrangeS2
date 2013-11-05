@@ -58,11 +58,3 @@ function updateMemoryTable() //updates memory table if/when different values sho
  
 //I don't think I was using the clearMemoryTable function anyway
 
-function clearCPU()
-{
-	_CPU.PC = 0;
-	_CPU.Acc = 0;
-	_CPU.Xreg = 0;
-	_CPU.Yreg = 0;
-	_CPU.Zflag = 0;
-}
