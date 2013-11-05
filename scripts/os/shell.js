@@ -128,6 +128,13 @@ function shellInit() {
     sc.description = "<PID> - Runs program in memory for given <PID>.";
     sc.function = shellRun;
     this.commandList[this.commandList.length] = sc; 	
+	
+	// runall
+    sc = new ShellCommand();
+    sc.command = "runall";
+    sc.description = "Runs all programs in memory.";
+    sc.function = shellRunAll;
+    this.commandList[this.commandList.length] = sc; 	
 
 	
     // processes - list the running processes and their IDs
@@ -566,5 +573,11 @@ function shellRun(args)
 		//run the code
 		_CPU.isExecuting = true;
 	}
+}
+
+function shellRunAll()
+{
+	_StdIn.putText("running....all...");
+
 }
 

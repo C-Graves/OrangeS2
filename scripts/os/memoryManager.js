@@ -48,7 +48,7 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 	
 	this.translateToDec = function(hexAddress)
 	{
-		return parseInt( hexAddress, 16); //+ this.getBaseValue();
+		return parseInt( hexAddress, 16) + this.getBaseValue();
 	}
 	
 	this.openMemLocExists = function()

@@ -74,7 +74,7 @@ function Cpu() {
 		
 		this.fetch = function()
 		{
-			return _Memory[this.PC + 0]; //0 === the base of the program -change later
+			return _Memory[this.PC + _CurrentProcess.base]; //0 === the base of the program -change later
 		};
 		
 		this.execute = function(opcode)  //something is still not quite right, but it is able to produce the right output at this time
