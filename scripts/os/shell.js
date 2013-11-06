@@ -576,6 +576,9 @@ function shellRun(args)
 		console.log(_LoadedJobs[args]);
 		_CurrentProcess = _LoadedJobs[args];
 		console.log(_CurrentProcess);
+		_CurrentProcess.state = RUNNING;
+		_ReadyQueue.enqueue(_CurrentProcess);
+		_ReadyQueue.dequeue();
 	
 		clearCPU();
 		//run the code
@@ -585,7 +588,18 @@ function shellRun(args)
 
 function shellRunAll()
 {
-	_StdIn.putText("running....all...");
+	_StdIn.putText("Running All...");
+	
+	for ( i in _LoadedJobs)
+	{
+		process = _LoadedJobs[i];
+		_ReadyQueue.enqueue(process); //missing priority
+		console.log(_ReadyQueue);
+	}
+	
+	_CurrentProcess = _ReadyQueue.dequeue();
+	clearCPU();
+	_CPU.isExecuting = true;
 
 }
 

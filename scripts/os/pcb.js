@@ -22,7 +22,7 @@ function processControlBlock(state, pid, PC, base, limit, memloc) //
 	//this.updateZflag();
 	//this.updateState();
 	
-	this.updatePC = function()
+		this.updatePC = function()
 		{
 			var cpuTable = document.getElementById("pcStatus").innerHTML=this.PC;
 		};
@@ -42,6 +42,10 @@ function processControlBlock(state, pid, PC, base, limit, memloc) //
 		{
 			var cpuTable = document.getElementById("zStatus").innerHTML=this.Zflag;
 		};
+		this.updateState = function()
+		{
+			var state = this.state;
+		}
 
 }
 

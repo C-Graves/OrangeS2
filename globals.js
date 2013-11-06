@@ -50,6 +50,8 @@ var _MemoryDisplayCells = null;
 var _PID = 0;
 var _LoadedJobs = null;
 var _CurrentProcess = null;
+var _ReadyQueue = null;
+var _Scheduler = null;
 
 // Default the OS trace to be on.
 var _Trace = true;

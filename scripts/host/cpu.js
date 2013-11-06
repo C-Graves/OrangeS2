@@ -310,15 +310,21 @@ function Cpu() {
 				
 				_MemoryManager.setAvail(_CurrentProcess.slot);
 				
-				if (parseInt(_MemoryManager.getNext(),16).toString() === "0" 
-									&& parseInt(_MemoryManager.getNext(),16).toString() === "0")
+				//if (parseInt(_MemoryManager.getNext(),16).toString() === "0" 
+				//					&& parseInt(_MemoryManager.getNext(),16).toString() === "0")
+				//{
+				console.log(_ReadyQueue.peek());
+				if(_ReadyQueue.peek()  != null) 
 				{
-				_StdIn.putText(">");
-				_CPU.isExecuting = false;
+					//_CurrentProcess = _ReadyQueue.dequeue();
+					clearCPU();
+					_Scheduler.contextSwitch();
 				}
 				else
 				{
-					this.PC++;
+					//this.PC++;
+				_StdIn.putText(">");
+				_CPU.isExecuting = false;
 				}
 			}
 			else{this.PC++;}

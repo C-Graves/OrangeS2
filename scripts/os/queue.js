@@ -33,6 +33,15 @@ function Queue()
         }
         return retVal;        
     };
+	
+	this.peek = function(){
+		if(this.q.length > 0)
+		{
+			return (this.q[0]);
+		}
+		else {return null;}
+	
+	}
     
     this.toString = function() {
         var retVal = "";

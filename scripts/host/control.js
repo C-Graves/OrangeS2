@@ -41,6 +41,8 @@ function hostInit()
 	_MemoryManager = new memoryManager();
 	makeMemoryTable();
 	_LoadedJobs = new Array();
+	_ReadyQueue = new Queue();
+	_Scheduler = new Scheduler();
 
    // Check for our testing and enrichment core.
    if (typeof Glados === "function") {
