@@ -87,4 +87,47 @@ function getDate()
     return retVal;
 }
 
-//took memory out of here
+//since this helps the shell already, I'll put program loader helper here
+
+	function newProcess()
+	{
+		var state = NEW;
+		var pid = _PID++;
+		var pc = 0;
+		
+		
+		var base;
+		var limit;
+		var slot;
+	
+		var memLocation = _MemoryManager.getOpenMemLoc();
+		console.log(memLocation);
+		//console.log(memLocation.memloc);
+	
+		if(memLocation)
+		{
+			_MemoryManager.setAvail(memLocation.memloc);
+			base = memLocation.base;
+			console.log("base: " + base);
+			limit = memLocation.limit;
+			console.log("limit: " + limit);
+			slot = memLocation.memloc;
+			console.log("slot: " + slot);
+			//pid = _PID++; //increments the global _PID for the next load
+		}
+		else
+		{ 
+			console.log("Hit the else");
+			base = -1;
+			limit = -1;
+			slot = -1;
+		
+		} //saved to disk, todo
+	
+		return (new processControlBlock(state, pid, pc, base, limit, slot));
+	
+	}
+	
+	
+
+

@@ -98,8 +98,8 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 	
 	this.getMemInfo = function(memloc)
 	{
-		var base = 0;
-		var limit = 0;
+		var base = -1;
+		var limit = -1;
 		var memoryArray = [];
 		
 		if(memloc = 0)

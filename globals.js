@@ -24,6 +24,11 @@ var KEYBOARD_IRQ = 1;
 var _TotalMemory = 768; //256 bytes
 var _MemoryBlockSize = 255; //256 bytes
 
+var NEW 		= 0; // new process
+var LOADED   	= 1; // to memory
+var READY		= 2; // to execute
+var RUNNING 	= 3; // going now
+var TERMINATED 	= 4; // done
 //
 // Global Variables
 //

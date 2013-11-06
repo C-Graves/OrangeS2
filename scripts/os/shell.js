@@ -444,45 +444,46 @@ function shellLoad(args)
 	var currentOp = "";
 	
 	
-	
+	console.log(arrayOpcodes.length + " is < " + _MemoryBlockSize);
 	if (isValid && arrayOpcodes.length < _MemoryBlockSize)
 	{
 		_StdIn.putText("Input entered is valid.");
 	
-		//var process = newProcess(); 		
+		var process = newProcess(); 		
 		//var pc = 0;
 
-		var base;
-		var limit;
-		var slot;
-		var pid = 0;
+		//var base;
+		//var limit;
+		//var slot;
+		//var pid = 0;
 		
-		var memLocation = _MemoryManager.getOpenMemLoc();
-		console.log(memLocation);
-		console.log(memLocation.memloc);
+		//var memLocation = _MemoryManager.getOpenMemLoc();
+		//console.log(memLocation);
+		//console.log(memLocation.memloc);
 		
-		if(memLocation)
-		{
-			_MemoryManager.setAvail(memLocation.memloc);
-			base = memLocation.base;
-			limit = memLocation.limit;
-			slot = memLocation.memloc;
-			pid = _PID++; //increments the global _PID for the next load
-		}
-		else{} //saved to disk, todo
+		//if(memLocation)
+		//{
+		//	_MemoryManager.setAvail(memLocation.memloc);
+		//	base = memLocation.base;
+		//	limit = memLocation.limit;
+		//	slot = memLocation.memloc;
+		//	pid = _PID++; //increments the global _PID for the next load
+		//}
+		//else{} //saved to disk, todo
 		
 		//clearCPU();	//?
 		
-		for( var i = base; i < arrayOpcodes.length + base; i++)
+		for( var i = process.base; i < arrayOpcodes.length + process.base; i++)
 		{
-			currentOp = arrayOpcodes[i - base];
+			currentOp = arrayOpcodes[i - process.base];
 			_Memory[i] = currentOp.toUpperCase();		
 		}
 		
-		for(var i = arrayOpcodes.length + base; i< limit+1; i++) //this resets any cells after loaded program ("clearMemoryTable" equivalent)
+		for(var i = arrayOpcodes.length + process.base; i< process.limit+1; i++) //this resets any cells after loaded program ("clearMemoryTable" equivalent)
 		{
 			_Memory[i] = "00";
 		}
+				
 		
 		var index = 0;
 		for(var row=0; row<96; row++)
@@ -494,10 +495,13 @@ function shellLoad(args)
 			}
 		}
 		
-		_LoadedJobs[pid] = pid; 
+		process.state = LOADED;
+		_LoadedJobs[process.pid] = process; 
+		console.log(_LoadedJobs);
+		console.log(_LoadedJobs[process.pid]);
 		
 		_StdIn.advanceLine();
-		_StdIn.putText("Process with PID " + pid + " added to memory");
+		_StdIn.putText("Process with PID " + process.pid + " added to memory");
 		
 	}
 	else 
@@ -568,7 +572,11 @@ function shellRun(args)
 	else
 	{
 		_StdIn.putText("Running...");
+		console.log(args);
+		console.log(_LoadedJobs[args]);
 		_CurrentProcess = _LoadedJobs[args];
+		console.log(_CurrentProcess);
+	
 		clearCPU();
 		//run the code
 		_CPU.isExecuting = true;
