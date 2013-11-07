@@ -132,7 +132,7 @@ function shellInit() {
 	// runall
     sc = new ShellCommand();
     sc.command = "runall";
-    sc.description = "- Runs all programs in memory.";
+    sc.description = "- Runs all processes.";
     sc.function = shellRunAll;
     this.commandList[this.commandList.length] = sc; 	
 	
@@ -143,9 +143,20 @@ function shellInit() {
     sc.function = shellQuantum;
     this.commandList[this.commandList.length] = sc; 	
 	
-    // processes - list the running processes and their IDs
-    // kill <id> - kills the specified process id.
-
+	// processes				// processes - list the running processes and their IDs
+    sc = new ShellCommand();
+    sc.command = "processes";
+    sc.description = "- Display all active processes.";
+    sc.function = shellProcesses;
+    this.commandList[this.commandList.length] = sc; 		
+	
+    
+	//kill<PID>					// kill <id> - kills the specified process id.
+	sc = new ShellCommand();
+    sc.command = "kill";
+    sc.description = "<PID> - Kills the specified PID.";
+    sc.function = shellKill;
+    this.commandList[this.commandList.length] = sc; 
     //
     // Display the initial prompt.
     this.putPrompt();
@@ -582,7 +593,7 @@ function shellRunAll()
 	{
 		process = _LoadedJobs[i];
 		_ReadyQueue.enqueue(process); //missing priority
-		//console.log(_ReadyQueue);
+		console.log(_ReadyQueue);
 	}
 	
 	_CurrentProcess = _ReadyQueue.dequeue();
@@ -608,3 +619,73 @@ function shellQuantum(args)
 
 }
 
+
+function shellProcesses()
+{
+	var actives = 0;
+	
+	for ( i in _LoadedJobs )
+	{
+		actives++;
+	}
+	
+	if(actives != 0 )
+	{
+		_StdIn.putText("All Active PIDs: ");
+		
+		for ( i in _LoadedJobs )
+		{
+			_StdIn.putText(_LoadedJobs[i].pid.toString());
+			_StdIn.putText(" ");
+		}
+		
+	}
+	else
+	{
+		_StdIn.putText("There are no active processes at this time.");
+	}
+
+
+}
+
+function shellKill(args)
+{
+	if(args.length === 0 || parseInt(args) != args)
+	{
+		_StdIn.putText("Please enter a valid PID.");
+	}
+	
+	else{
+		var toDie = parseInt(args[0]);
+		var process;
+		for ( i in _LoadedJobs )
+		{
+			if(toDie === _LoadedJobs[i].pid)
+			{
+				process = _LoadedJobs[i];
+				break;
+			}
+		}
+		
+		if(process)
+		{
+			if(process.status === RUNNING)
+			{
+				process.status = TERMINATED;
+			}
+			else
+			{
+				_ReadyQueue.remove(i-1);
+				delete _LoadedJobs[i];
+			}
+			_StdIn.putText("PID has been killed.");
+		}
+		else
+		{
+			_StdIn.putText("There is no process with that PID.");
+		}
+	
+	}
+
+
+}

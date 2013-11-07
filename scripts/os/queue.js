@@ -43,6 +43,15 @@ function Queue()
 	
 	}
 	
+	this.remove = function(index){
+		var savedPart = this.q.splice(0,index);
+		console.log(savedPart);
+		console.log(this.q);
+		this.q.shift()
+		this.q = savedPart.concat(this.q);
+		console.log(this.q);
+	}
+	
 	//this.getItem = function(index){
 	//	var contains = contents[index];
 	//	
@@ -62,7 +71,6 @@ function Queue()
 
 function updateReadyQueueDisp()
 {
-	console.log("entered updateReadyQueueDisp()");
 	var totalProcesses = _ReadyQueue.getSize();
 	
 	if ( totalProcesses > 3 ) 
@@ -74,6 +82,7 @@ function updateReadyQueueDisp()
 	
 	for(var i = 0; i < totalProcesses; i++)
 	{
+		console.log(i);
 		var RQpid = document.getElementById("rq" +(i+1)+"pid").innerHTML = _CurrentProcess.pid;
 		var RQstate = document.getElementById("rq" +(i+1)+"state").innerHTML = _CurrentProcess.state;
 		var RQbase = document.getElementById("rq" +(i+1)+"base").innerHTML = _CurrentProcess.base;

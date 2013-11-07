@@ -59,6 +59,7 @@ function Cpu() {
 		this.execute(this.fetch());
 		
 		_CurCycleCount++;
+		console.log("incrementing cycle: "+_CurCycleCount++);
 		//update CPU values in realtime
 		
 		this.updatePC();
@@ -106,13 +107,11 @@ function Cpu() {
 		{								 //has to do with being stored into 4 instead of 4B, for example
 			if(opcode === "A9") //Load accumulator with a constant
 			{
-				console.log("A9");
 				this.Acc = parseInt(_MemoryManager.getNext(),16);
 				this.PC++;
 			}
 			else if(opcode === "AD") //Load the accumulator in memory
 			{
-				console.log("AD");
 				var nextCell = parseInt(_MemoryManager.getNext(),16);
 				var nextNext = parseInt(_MemoryManager.getNext(),16);
 				var addressH = (nextNext + nextCell);
@@ -129,7 +128,6 @@ function Cpu() {
 			}
 			else if(opcode === "8D") //Store the accumulator in memory
 			{
-				console.log("8D");
 				var nextCell = parseInt(_MemoryManager.getNext());//
 				var nextNext = parseInt(_MemoryManager.getNext());//
 				
@@ -151,7 +149,6 @@ function Cpu() {
 			}
 			else if(opcode === "6D") //Add with carry
 			{						 // adds content of address to the contents of acc- results in acc
-				console.log("6D");
 				var nextCell = parseInt(_MemoryManager.getNext(),16);
 				var nextNext = parseInt(_MemoryManager.getNext(),16);
 				var addressH = (nextNext + nextCell);
@@ -172,15 +169,12 @@ function Cpu() {
 			}
 			else if(opcode === "A2") //Load the X register with a constant
 			{
-				console.log("A2");
 				//this.Xreg = parseInt(_MemoryManager.getNext(),16);
 				this.Xreg = parseInt(_MemoryManager.getNext());
-				console.log(this.Xreg);
 				this.PC++;
 			}
 			else if(opcode === "AE") //Load the X register from memory
 			{
-				console.log("AE");
 				var nextCell = parseInt(_MemoryManager.getNext());
 				var nextNext = parseInt(_MemoryManager.getNext());
 				var addressH = (nextNext + nextCell);
@@ -198,7 +192,6 @@ function Cpu() {
 			}
 			else if(opcode === "A0") //Load the Y register with a constant
 			{
-				console.log("A0");
 				//this.Yreg = parseInt(_Memory[(this.PC + 1)+0],16);
 				//this.Yreg =(_Memory[_MemoryManager.getNext()]);
 				this.Yreg =_MemoryManager.getNext();
@@ -206,7 +199,6 @@ function Cpu() {
 			}
 			else if(opcode === "AC") //Load the Y register from memory
 			{
-				console.log("AC");
 				var baseAdjust = _MemoryManager.getBaseValue();
 				var nextCell = parseInt(_MemoryManager.getNext());
 				var nextNext = parseInt(_MemoryManager.getNext());
@@ -224,12 +216,10 @@ function Cpu() {
 			}
 			else if(opcode === "EA") //No Operation
 			{
-				console.log("EA");
 				this.PC++;
 			}
 			else if(opcode === "EC") //Compare a byte in memory to the X reg & sets the Z flag if equal
 			{			
-				console.log("EC");
 				var nextCell = parseInt(_MemoryManager.getNext());
 				var nextNext = parseInt(_MemoryManager.getNext());
 				var addressH = (nextNext + nextCell);
@@ -247,7 +237,6 @@ function Cpu() {
 			}
 			else if(opcode === "D0") //Branch X bytes if Z flag = 0
 			{
-				console.log("D0");
 				if(this.Zflag === 0)
 				{
 					var branchVal = parseInt(_MemoryManager.getNext(),16);
@@ -266,7 +255,6 @@ function Cpu() {
 
 			else if(opcode === "EE") //Increment the value of a byte
 			{
-				console.log("EE");
 				var nextCell = parseInt(_MemoryManager.getNext());
 				var nextNext = parseInt(_MemoryManager.getNext());
 				var addressH = (nextNext + nextCell);
@@ -287,7 +275,6 @@ function Cpu() {
 			}
 			else if(opcode === "FF") //System Call
 			{						 //$01 in X reg = print the int stored in the Y reg	 
-				console.log("FF");
 				if(this.Xreg === 1)  //$02 in X reg = print the string stored at address in Y reg
 				{
 					var val = parseInt(this.Yreg).toString();
@@ -299,10 +286,7 @@ function Cpu() {
 				}
 				else if(this.Xreg === 2)
 				{
-					console.log("y reg: "+parseInt(this.Yreg,16));
-					console.log("base val: " + _MemoryManager.getBaseValue());
 					var addressD = 	parseInt(this.Yreg,16) + _MemoryManager.getBaseValue();	
-					console.log("addressD in FF " + addressD);
 					var terminateString = "00";
 					var current = _Memory[addressD];
 					var keyCode = 0;
@@ -320,27 +304,22 @@ function Cpu() {
 				this.PC++;
 			}
 			else if(opcode === "00") //Break (system call)
-			{
-				console.log("00");
-				/*
+			{	
 				_CurrentProcess.updatePC;
 				_CurrentProcess.updateAcc;
 				_CurrentProcess.updateXreg;
 				_CurrentProcess.updateYreg;
 				_CurrentProcess.updateZflag;
-				*/
+				
 				_CurrentProcess.update(TERMINATED, this.PC, this.Acc, this.Xreg, this.Yreg, this.Zflag);
 				
 				_MemoryManager.setAvail(_CurrentProcess.slot);
-				
-				//if (parseInt(_MemoryManager.getNext(),16).toString() === "0" 
-				//					&& parseInt(_MemoryManager.getNext(),16).toString() === "0")
-				//{
+
 				console.log(_ReadyQueue.peek());
-				if(_ReadyQueue.peek()  != null) 
+				if(_ReadyQueue.peek())  // != null) 
 				{
 					//_CurrentProcess = _ReadyQueue.dequeue();
-					clearCPU();
+					//clearCPU();
 					_Scheduler.contextSwitch();
 				}
 				else

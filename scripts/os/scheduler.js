@@ -7,8 +7,9 @@ function Scheduler()
 		
 		this.algorithm = _RoundRobin
 	
-		if(_ReadyQueue.peek() )  // !=null)
+		if(_ReadyQueue.peek() !=null)
 		{
+			//Performing context switch
 			if(_CurrentProcess.state != TERMINATED)
 			{
 				
@@ -44,7 +45,7 @@ function Scheduler()
 		}
 		
 		_CurCycleCount = 1;
-	
+		console.log(_CurCycleCount);
 	
 	}
 
