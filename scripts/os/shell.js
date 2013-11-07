@@ -494,7 +494,7 @@ function shellLoad(args)
 		
 		process.state = LOADED;
 		_LoadedJobs[process.pid] = process; 
-		//console.log(_LoadedJobs);
+		console.log(_LoadedJobs);
 		//console.log(_LoadedJobs[process.pid]);
 		
 		_StdIn.advanceLine();
@@ -595,7 +595,7 @@ function shellRunAll()
 		_ReadyQueue.enqueue(process); //missing priority
 		console.log(_ReadyQueue);
 	}
-	
+	_Scheduler.algorithm = _RoundRobin; //will change this, but should make it automagically use RR
 	_CurrentProcess = _ReadyQueue.dequeue();
 	clearCPU();
 	_CPU.isExecuting = true;

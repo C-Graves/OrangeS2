@@ -1,12 +1,13 @@
 function Scheduler()
 {
-	console.log("entered scheduler"); 
+	this.algorithm = _RoundRobin; //will change this, but should make it automagically use RR
 	this.contextSwitch = function()
 	{
 		this.quantum = _Quantum;
 		
 		this.algorithm = _RoundRobin
-	
+		
+		console.log("Peeking! "+ _ReadyQueue.peek());
 		if(_ReadyQueue.peek() !=null)
 		{
 			//Performing context switch

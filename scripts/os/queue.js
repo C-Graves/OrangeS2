@@ -69,8 +69,8 @@ function Queue()
     };
 }
 
-function updateReadyQueueDisp()
-{
+function updateReadyQueueDisp() //This isn't quite working, but it does show how it switches.
+{								// Not sure why it is doubling.
 	var totalProcesses = _ReadyQueue.getSize();
 	
 	if ( totalProcesses > 3 ) 

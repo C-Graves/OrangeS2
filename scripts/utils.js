@@ -88,7 +88,6 @@ function getDate()
 }
 
 //since this helps the shell already, I'll put program loader helper here
-
 	function newProcess()
 	{
 		var state = NEW;
@@ -102,7 +101,6 @@ function getDate()
 	
 		var memLocation = _MemoryManager.getOpenMemLoc();
 		console.log(memLocation);
-		//console.log(memLocation.memloc);
 	
 		if(memLocation)
 		{
