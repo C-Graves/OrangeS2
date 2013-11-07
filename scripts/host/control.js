@@ -45,10 +45,10 @@ function hostInit()
 	_Scheduler = new Scheduler();
 
    // Check for our testing and enrichment core.
-   if (typeof Glados === "function") {
-      _GLaDOS = new Glados();
-      _GLaDOS.init();
-   };
+//   if (typeof Glados === "function") {
+//      _GLaDOS = new Glados();
+//      _GLaDOS.init();
+//   };
 
 }
 

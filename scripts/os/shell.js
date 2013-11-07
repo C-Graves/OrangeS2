@@ -125,17 +125,23 @@ function shellInit() {
 	// run <PID>
     sc = new ShellCommand();
     sc.command = "run";
-    sc.description = "<PID> - Runs program in memory for given <PID>.";
+    sc.description = "<PID> - Runs program with given <PID>.";
     sc.function = shellRun;
     this.commandList[this.commandList.length] = sc; 	
 	
 	// runall
     sc = new ShellCommand();
     sc.command = "runall";
-    sc.description = "Runs all programs in memory.";
+    sc.description = "- Runs all programs in memory.";
     sc.function = shellRunAll;
     this.commandList[this.commandList.length] = sc; 	
-
+	
+	// quantum <int>
+    sc = new ShellCommand();
+    sc.command = "quantum";
+    sc.description = "<int> - Set quantum for RR Scheduling.";
+    sc.function = shellQuantum;
+    this.commandList[this.commandList.length] = sc; 	
 	
     // processes - list the running processes and their IDs
     // kill <id> - kills the specified process id.
@@ -450,26 +456,6 @@ function shellLoad(args)
 		_StdIn.putText("Input entered is valid.");
 	
 		var process = newProcess(); 		
-		//var pc = 0;
-
-		//var base;
-		//var limit;
-		//var slot;
-		//var pid = 0;
-		
-		//var memLocation = _MemoryManager.getOpenMemLoc();
-		//console.log(memLocation);
-		//console.log(memLocation.memloc);
-		
-		//if(memLocation)
-		//{
-		//	_MemoryManager.setAvail(memLocation.memloc);
-		//	base = memLocation.base;
-		//	limit = memLocation.limit;
-		//	slot = memLocation.memloc;
-		//	pid = _PID++; //increments the global _PID for the next load
-		//}
-		//else{} //saved to disk, todo
 		
 		//clearCPU();	//?
 		
@@ -497,8 +483,8 @@ function shellLoad(args)
 		
 		process.state = LOADED;
 		_LoadedJobs[process.pid] = process; 
-		console.log(_LoadedJobs);
-		console.log(_LoadedJobs[process.pid]);
+		//console.log(_LoadedJobs);
+		//console.log(_LoadedJobs[process.pid]);
 		
 		_StdIn.advanceLine();
 		_StdIn.putText("Process with PID " + process.pid + " added to memory");
@@ -572,10 +558,10 @@ function shellRun(args)
 	else
 	{
 		_StdIn.putText("Running...");
-		console.log(args);
-		console.log(_LoadedJobs[args]);
+		//console.log(args);
+		//console.log(_LoadedJobs[args]);
 		_CurrentProcess = _LoadedJobs[args];
-		console.log(_CurrentProcess);
+		//console.log(_CurrentProcess);
 		_CurrentProcess.state = RUNNING;
 		_ReadyQueue.enqueue(_CurrentProcess);
 		_ReadyQueue.dequeue();
@@ -590,16 +576,35 @@ function shellRunAll()
 {
 	_StdIn.putText("Running All...");
 	
-	for ( i in _LoadedJobs)
+	var process = null;
+	
+	for ( i in _LoadedJobs )
 	{
 		process = _LoadedJobs[i];
 		_ReadyQueue.enqueue(process); //missing priority
-		console.log(_ReadyQueue);
+		//console.log(_ReadyQueue);
 	}
 	
 	_CurrentProcess = _ReadyQueue.dequeue();
 	clearCPU();
 	_CPU.isExecuting = true;
+
+}
+
+function shellQuantum(args)
+{
+	var quantum = parseInt(args[0]);
+	
+	if(args.length === 0 || parseInt(args) != args || quantum < 0)
+	{
+		_StdIn.putText("Please enter a valid, positive integer.");
+	}
+	else
+	{
+		_Quantum = quantum;
+		_StdIn.putText("Quantum is now "+ quantum + ".");
+	}
+
 
 }
 

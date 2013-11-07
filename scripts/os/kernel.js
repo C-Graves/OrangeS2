@@ -83,6 +83,7 @@ function krnOnCPUClockPulse()
 	var theDateTime = document.getElementById("clock");
 	theDateTime.innerHTML = ("Time & Date: "+getDate()); //not fancy but a good start
 	
+	updateReadyQueueDisp();
 	
 	if (_KernelInterruptQueue.getSize() > 0)    
     {

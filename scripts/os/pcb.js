@@ -22,6 +22,18 @@ function processControlBlock(state, pid, PC, base, limit, memloc) //
 	//this.updateZflag();
 	//this.updateState();
 	
+	this.update = function(state, PC, ACC, X, Y, Z)
+	{
+		this.state = state;
+		this.PC = PC;
+		this.Acc = ACC;
+		this.Xreg = X;
+		this.Yreg = Y;
+		this.Zflag = Z;
+	
+	
+	}
+	
 		this.updatePC = function()
 		{
 			var cpuTable = document.getElementById("pcStatus").innerHTML=this.PC;

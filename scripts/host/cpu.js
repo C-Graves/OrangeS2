@@ -29,6 +29,16 @@ function Cpu() {
         this.Zflag = 0;      
         this.isExecuting = false;  
     };
+	
+	this.update = function(PC, ACC, X, Y, Z)
+	{
+		this.PC = PC;
+		this.Acc = ACC;
+		this.Xreg = X;
+		this.Yreg = Y;
+		this.Zflag = Z;
+	
+	}
     
     this.cycle = function() {
 	
@@ -37,8 +47,18 @@ function Cpu() {
         // TODO: Accumulate CPU usage and profiling statistics here.
         // Do the real work here. Be sure to set this.isExecuting appropriately.
 		
+		if(_Scheduler.algorithm === _RoundRobin)
+		{
+			if(_CurCycleCount > _Quantum)
+			{
+				_Scheduler.contextSwitch();
+			}
+		}
+		
+		
 		this.execute(this.fetch());
 		
+		_CurCycleCount++;
 		//update CPU values in realtime
 		
 		this.updatePC();
@@ -302,11 +322,14 @@ function Cpu() {
 			else if(opcode === "00") //Break (system call)
 			{
 				console.log("00");
+				/*
 				_CurrentProcess.updatePC;
 				_CurrentProcess.updateAcc;
 				_CurrentProcess.updateXreg;
 				_CurrentProcess.updateYreg;
 				_CurrentProcess.updateZflag;
+				*/
+				_CurrentProcess.update(TERMINATED, this.PC, this.Acc, this.Xreg, this.Yreg, this.Zflag);
 				
 				_MemoryManager.setAvail(_CurrentProcess.slot);
 				

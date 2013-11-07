@@ -42,6 +42,13 @@ function Queue()
 		else {return null;}
 	
 	}
+	
+	//this.getItem = function(index){
+	//	var contains = contents[index];
+	//	
+	//	if(contains){return contains.object
+	
+	//}
     
     this.toString = function() {
         var retVal = "";
@@ -52,3 +59,39 @@ function Queue()
         return retVal;
     };
 }
+
+function updateReadyQueueDisp()
+{
+	console.log("entered updateReadyQueueDisp()");
+	var totalProcesses = _ReadyQueue.getSize();
+	
+	if ( totalProcesses > 3 ) 
+	{
+		totalProcesses = 3;
+	} 
+	
+	clearReadyQueueDisp();
+	
+	for(var i = 0; i < totalProcesses; i++)
+	{
+		var RQpid = document.getElementById("rq" +(i+1)+"pid").innerHTML = _CurrentProcess.pid;
+		var RQstate = document.getElementById("rq" +(i+1)+"state").innerHTML = _CurrentProcess.state;
+		var RQbase = document.getElementById("rq" +(i+1)+"base").innerHTML = _CurrentProcess.base;
+		var RQlimit = document.getElementById("rq" +(i+1)+"limit").innerHTML = _CurrentProcess.limit;
+		console.log("pid: " + RQpid + " state: "+RQstate+ " base: "+RQbase+" limit: "+RQlimit); 
+	}
+
+}
+
+function clearReadyQueueDisp()
+{
+	for(var i = 0; i < 3; i++)
+	{
+		var RQpid = document.getElementById("rq" +(i+1)+"pid").innerHTML = "---";
+		var RQstate = document.getElementById("rq" +(i+1)+"state").innerHTML = "---";
+		var RQbase = document.getElementById("rq" +(i+1)+"base").innerHTML = "---";
+		var RQlimit = document.getElementById("rq" +(i+1)+"limit").innerHTML = "---";
+		
+	}
+}
+

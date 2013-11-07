@@ -36,7 +36,7 @@ var _CPU = null;
 
 var _OSclock = 0;       // Page 23.
 
-var _Mode = 0;   // 0 = Kernel Mode, 1 = User Mode.  See page 21.
+//var _Mode = 0;   // 0 = Kernel Mode, 1 = User Mode.  See page 21.
 
 var _Canvas = null;               // Initialized in hostInit().
 var _DrawingContext = null;       // Initialized in hostInit().
@@ -52,6 +52,9 @@ var _LoadedJobs = null;
 var _CurrentProcess = null;
 var _ReadyQueue = null;
 var _Scheduler = null;
+var _Quantum = 6;
+var _CurCycleCount = 0;
+var _RoundRobin = 0;
 
 // Default the OS trace to be on.
 var _Trace = true;
