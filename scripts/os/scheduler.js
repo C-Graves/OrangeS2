@@ -15,7 +15,7 @@ function Scheduler()
 			{
 				
 				//_CurrentProcess = _ReadyQueue.dequeue();
-			
+				console.log("in loop");
 				_CurrentProcess.update(READY, _CPU.PC, _CPU.Acc, _CPU.Xreg, _CPU.Yreg, _CPU.Zflag);
 				
 				_CurrentProcess.updatePC;
@@ -27,7 +27,7 @@ function Scheduler()
 				_CPU.update(_CurrentProcess.PC, _CurrentProcess.Acc, _CurrentProcess.Xreg,
 							_CurrentProcess.Yreg, _CurrentProcess.Zflag);
 				
-				console.log(_CurrentProcess);
+				updateReadyQueueDisp();
 				
 				_ReadyQueue.enqueue(_CurrentProcess);
 			}

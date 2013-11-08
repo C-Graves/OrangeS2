@@ -157,6 +157,7 @@ function shellInit() {
     sc.description = "<PID> - Kills the specified PID.";
     sc.function = shellKill;
     this.commandList[this.commandList.length] = sc; 
+		
     //
     // Display the initial prompt.
     this.putPrompt();
@@ -686,6 +687,6 @@ function shellKill(args)
 		}
 	
 	}
-
-
 }
+
+

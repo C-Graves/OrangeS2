@@ -62,6 +62,8 @@ function Cpu() {
 		console.log("incrementing cycle: "+_CurCycleCount++);
 		//update CPU values in realtime
 		
+		//this.state === RUNNING;
+		
 		this.updatePC();
 		this.updateAcc();
 		this.updateXreg();
@@ -105,6 +107,8 @@ function Cpu() {
 		
 		this.execute = function(opcode)  //something is still not quite right, but it is able to produce the right output at this time
 		{								 //has to do with being stored into 4 instead of 4B, for example
+			
+			_CurrentProcess.update(RUNNING, this.PC, this.Acc, this.Xreg, this.Yreg, this.Zflag);
 			if(opcode === "A9") //Load accumulator with a constant
 			{
 				this.Acc = parseInt(_MemoryManager.getNext(),16);

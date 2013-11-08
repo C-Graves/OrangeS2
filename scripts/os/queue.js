@@ -71,7 +71,7 @@ function Queue()
 
 function updateReadyQueueDisp() //This isn't quite working, but it does show how it switches.
 {								// Not sure why it is doubling.
-	var totalProcesses = _ReadyQueue.getSize();
+	var totalProcesses = _LoadedJobs.length;
 	
 	if ( totalProcesses > 3 ) 
 	{
@@ -82,12 +82,11 @@ function updateReadyQueueDisp() //This isn't quite working, but it does show how
 	
 	for(var i = 0; i < totalProcesses; i++)
 	{
-		console.log(i);
-		var RQpid = document.getElementById("rq" +(i+1)+"pid").innerHTML = _CurrentProcess.pid;
-		var RQstate = document.getElementById("rq" +(i+1)+"state").innerHTML = _CurrentProcess.state;
-		var RQbase = document.getElementById("rq" +(i+1)+"base").innerHTML = _CurrentProcess.base;
-		var RQlimit = document.getElementById("rq" +(i+1)+"limit").innerHTML = _CurrentProcess.limit;
-		console.log("pid: " + RQpid + " state: "+RQstate+ " base: "+RQbase+" limit: "+RQlimit); 
+		var RQpid = document.getElementById("rq" +(i+1)+"pid").innerHTML = _LoadedJobs[i].pid;
+		var RQstate = document.getElementById("rq" +(i+1)+"state").innerHTML = translateState(_LoadedJobs[i].state);
+		var RQbase = document.getElementById("rq" +(i+1)+"base").innerHTML = _LoadedJobs[i].base;
+		var RQlimit = document.getElementById("rq" +(i+1)+"limit").innerHTML = _LoadedJobs[i].limit;
+		//console.log("pid: " + RQpid + " state: "+RQstate+ " base: "+RQbase+" limit: "+RQlimit); 
 	}
 
 }
@@ -103,4 +102,15 @@ function clearReadyQueueDisp()
 		
 	}
 }
+
+function translateState(num)
+{									//so its readable text
+	if (num === 0) {return "NEW";}
+	else if (num === 1) {return "LOADED";}
+	else if (num === 2) {return "READY";}
+	else if (num === 3) {return "RUNNING";}
+	else if (num === 4) {return "TERMINATED";}
+	else{return num;}
+}
+
 
