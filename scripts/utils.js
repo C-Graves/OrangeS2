@@ -100,7 +100,7 @@ function getDate()
 		var slot;
 	
 		var memLocation = _MemoryManager.getOpenMemLoc();
-		console.log(memLocation);
+		//console.log(memLocation);
 	
 		if(memLocation)
 		{

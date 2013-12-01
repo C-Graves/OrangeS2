@@ -46,7 +46,7 @@ function Cpu() {
         krnTrace("CPU cycle");
         // TODO: Accumulate CPU usage and profiling statistics here.
         // Do the real work here. Be sure to set this.isExecuting appropriately.
-		console.log(_Scheduler.algorithm);
+		//console.log(_Scheduler.algorithm);
 		if(_Scheduler.algorithm === _RoundRobin)
 		{
 			if(_CurCycleCount > _Quantum)
@@ -59,7 +59,7 @@ function Cpu() {
 		this.execute(this.fetch());
 		
 		_CurCycleCount++;
-		console.log("incrementing cycle: "+_CurCycleCount++);
+		//console.log("incrementing cycle: "+_CurCycleCount++);
 		//update CPU values in realtime
 		
 		//this.state === RUNNING;
@@ -132,12 +132,15 @@ function Cpu() {
 			}
 			else if(opcode === "8D") //Store the accumulator in memory
 			{
-				var nextCell = parseInt(_MemoryManager.getNext());//
-				var nextNext = parseInt(_MemoryManager.getNext());//
+				var nextCell = _MemoryManager.getNext();//
+				var nextNext = _MemoryManager.getNext();//
+				console.log(nextCell + "  " + nextNext);
 				
 				var addressH = (nextNext + nextCell);
 				addressH = addressH.toString();
+				console.log("addressH " + addressH);
 				var addressD = _MemoryManager.translateToDec(addressH); 
+				console.log("addressD " +addressD);
 				if(_MemoryManager.isValid(addressD))
 				{
 					var accToHex = this.Acc.toString(16).toUpperCase();
@@ -153,8 +156,8 @@ function Cpu() {
 			}
 			else if(opcode === "6D") //Add with carry
 			{						 // adds content of address to the contents of acc- results in acc
-				var nextCell = parseInt(_MemoryManager.getNext(),16);
-				var nextNext = parseInt(_MemoryManager.getNext(),16);
+				var nextCell = _MemoryManager.getNext();// 
+				var nextNext = _MemoryManager.getNext();//
 				var addressH = (nextNext + nextCell);
 				var addressD = _MemoryManager.translateToDec(addressH); 
 				if(_MemoryManager.isValid(addressD))
@@ -198,7 +201,8 @@ function Cpu() {
 			{
 				//this.Yreg = parseInt(_Memory[(this.PC + 1)+0],16);
 				//this.Yreg =(_Memory[_MemoryManager.getNext()]);
-				this.Yreg =_MemoryManager.getNext();
+				var test = this.Yreg =_MemoryManager.getNext();
+				console.log(test +" test");
 				this.PC++;
 			}
 			else if(opcode === "AC") //Load the Y register from memory
@@ -319,7 +323,7 @@ function Cpu() {
 				
 				_MemoryManager.setAvail(_CurrentProcess.slot);
 
-				console.log(_ReadyQueue.peek());
+				//console.log(_ReadyQueue.peek());
 				if(_ReadyQueue.peek())  // != null) 
 				{
 					//_CurrentProcess = _ReadyQueue.dequeue();

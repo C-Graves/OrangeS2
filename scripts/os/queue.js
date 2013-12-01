@@ -45,11 +45,11 @@ function Queue()
 	
 	this.remove = function(index){
 		var savedPart = this.q.splice(0,index);
-		console.log(savedPart);
-		console.log(this.q);
+		//console.log(savedPart);
+		//console.log(this.q);
 		this.q.shift()
 		this.q = savedPart.concat(this.q);
-		console.log(this.q);
+		//console.log(this.q);
 	}
 	
 	//this.getItem = function(index){

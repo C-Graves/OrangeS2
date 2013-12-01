@@ -57,7 +57,7 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 		var loc1Avail = this.memoryTable.loc1.empty;
 		var loc2Avail = this.memoryTable.loc2.empty;
 		
-		console.log((loc0Avail));
+		//console.log((loc0Avail));
 		return (loc0Avail || loc1Avail || loc2Avail);
 		
 	}

@@ -7,7 +7,7 @@ function Scheduler()
 		
 		this.algorithm = _RoundRobin
 		
-		console.log("Peeking! "+ _ReadyQueue.peek());
+		//console.log("Peeking! "+ _ReadyQueue.peek());
 		if(_ReadyQueue.peek() !=null)
 		{
 			//Performing context switch
@@ -15,7 +15,7 @@ function Scheduler()
 			{
 				
 				//_CurrentProcess = _ReadyQueue.dequeue();
-				console.log("in loop");
+				//console.log("in loop");
 				_CurrentProcess.update(READY, _CPU.PC, _CPU.Acc, _CPU.Xreg, _CPU.Yreg, _CPU.Zflag);
 				
 				_CurrentProcess.updatePC;
@@ -46,7 +46,7 @@ function Scheduler()
 		}
 		
 		_CurCycleCount = 1;
-		console.log(_CurCycleCount);
+		//console.log(_CurCycleCount);
 	
 	}
 

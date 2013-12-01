@@ -462,7 +462,7 @@ function shellLoad(args)
 	var currentOp = "";
 	
 	
-	console.log(arrayOpcodes.length + " is < " + _MemoryBlockSize);
+	//console.log(arrayOpcodes.length + " is < " + _MemoryBlockSize);
 	if (isValid && arrayOpcodes.length < _MemoryBlockSize)
 	{
 		_StdIn.putText("Input entered is valid.");
@@ -495,7 +495,7 @@ function shellLoad(args)
 		
 		process.state = LOADED;
 		_LoadedJobs[process.pid] = process; 
-		console.log(_LoadedJobs);
+		//console.log(_LoadedJobs);
 		//console.log(_LoadedJobs[process.pid]);
 		
 		_StdIn.advanceLine();
@@ -594,7 +594,7 @@ function shellRunAll()
 	{
 		process = _LoadedJobs[i];
 		_ReadyQueue.enqueue(process); //missing priority
-		console.log(_ReadyQueue);
+		//console.log(_ReadyQueue);
 	}
 	_Scheduler.algorithm = _RoundRobin; //will change this, but should make it automagically use RR
 	_CurrentProcess = _ReadyQueue.dequeue();
