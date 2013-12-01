@@ -109,6 +109,7 @@ function Cpu() {
 		{								 //has to do with being stored into 4 instead of 4B, for example
 			
 			_CurrentProcess.update(RUNNING, this.PC, this.Acc, this.Xreg, this.Yreg, this.Zflag);
+			console.log("PC is: " + this.PC + " ACC is: " + this.Acc);
 			if(opcode === "A9") //Load accumulator with a constant
 			{
 				this.Acc = parseInt(_MemoryManager.getNext(),16);
@@ -132,8 +133,9 @@ function Cpu() {
 			}
 			else if(opcode === "8D") //Store the accumulator in memory
 			{
-				var nextCell = _MemoryManager.getNext();//
-				var nextNext = _MemoryManager.getNext();//
+				console.log("is 8D not working?");
+				var nextCell = parseInt(_MemoryManager.getNext());//
+				var nextNext = parseInt(_MemoryManager.getNext());//
 				console.log(nextCell + "  " + nextNext);
 				
 				var addressH = (nextNext + nextCell);
@@ -144,6 +146,7 @@ function Cpu() {
 				if(_MemoryManager.isValid(addressD))
 				{
 					var accToHex = this.Acc.toString(16).toUpperCase();
+					console.log("accToHex value: " + accToHex);
 					//var accToHex = this.Acc;//.toString().toUpperCase();
 					if(accToHex.length === 1) {accToHex = "0" + accToHex;}
 					_Memory[addressD] = accToHex;
@@ -156,17 +159,19 @@ function Cpu() {
 			}
 			else if(opcode === "6D") //Add with carry
 			{						 // adds content of address to the contents of acc- results in acc
-				var nextCell = _MemoryManager.getNext();// 
-				var nextNext = _MemoryManager.getNext();//
+				var nextCell = parseInt(_MemoryManager.getNext());// 
+				var nextNext = parseInt(_MemoryManager.getNext());//
 				var addressH = (nextNext + nextCell);
+				console.log("addressH in 6D: " + addressH);
 				var addressD = _MemoryManager.translateToDec(addressH); 
 				if(_MemoryManager.isValid(addressD))
 				{
 					this.Acc = this.Acc + parseInt(_Memory[addressD],16);
 					
-					var accToHex = this.Acc.toString(16).toUpperCase();
-					if(accToHex.length === 1) {accToHex = "0" + accToHex;}
-					_Memory[addressD] = accToHex;
+					//var accToHex = this.Acc.toString(16).toUpperCase();
+					//console.log("accToHex value: " + accToHex);
+					//if(accToHex.length === 1) {accToHex = "0" + accToHex;}
+					//_Memory[addressD] = accToHex;
 				}
 				else
 				{
@@ -200,9 +205,9 @@ function Cpu() {
 			else if(opcode === "A0") //Load the Y register with a constant
 			{
 				//this.Yreg = parseInt(_Memory[(this.PC + 1)+0],16);
-				//this.Yreg =(_Memory[_MemoryManager.getNext()]);
-				var test = this.Yreg =_MemoryManager.getNext();
-				console.log(test +" test");
+				this.Yreg =_MemoryManager.getNext();
+				//var test = this.Yreg =(_Memory[_MemoryManager.getNext()]);
+				console.log("inside A0");
 				this.PC++;
 			}
 			else if(opcode === "AC") //Load the Y register from memory
@@ -231,6 +236,7 @@ function Cpu() {
 				var nextCell = parseInt(_MemoryManager.getNext());
 				var nextNext = parseInt(_MemoryManager.getNext());
 				var addressH = (nextNext + nextCell);
+				console.log("addressH in EC: "+addressH);
 				var addressD = _MemoryManager.translateToDec(addressH); 
 				if(_MemoryManager.isValid(addressD))
 				{
@@ -335,6 +341,7 @@ function Cpu() {
 					//this.PC++;
 				_StdIn.putText(">");
 				_CPU.isExecuting = false;
+				clearCPU();
 				}
 			}
 			else{this.PC++;}
