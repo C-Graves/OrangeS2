@@ -56,5 +56,25 @@ function updateMemoryTable() //updates memory table if/when different values sho
 }
 
  
-//I don't think I was using the clearMemoryTable function anyway
+function clearMemory0()
+{
+	for(i = _MemoryManager.memoryTable.loc0.base; i<_MemoryManager.memoryTable.loc0.limit; i++) //+1 cuz undefined when memory rewritten; it was +1, but this is not giving me a problem w/o it...
+	{
+		_Memory[i] = "00";
+	}
+}
 
+function clearMemory1()
+{
+	for(i = _MemoryManager.memoryTable.loc1.base; i<_MemoryManager.memoryTable.loc1.limit; i++) //+1 cuz undefined when memory rewritten; it was +1, but this is not giving me a problem w/o it...
+	{
+		_Memory[i] = "00";
+	}
+}
+function clearMemory2()
+{
+	for(i = _MemoryManager.memoryTable.loc2.base; i<_MemoryManager.memoryTable.loc2.limit; i++) //+1 cuz undefined when memory rewritten; it was +1, but this is not giving me a problem w/o it...
+	{
+		_Memory[i] = "00";
+	}
+}

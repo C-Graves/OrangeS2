@@ -469,8 +469,11 @@ function shellLoad(args)
 	
 		var process = newProcess(); 		
 		
-		//clearCPU();	//?
-		
+		clearCPU();	//?
+		//clearMemory();
+		if(process.base == _MemoryManager.memoryTable.loc0.base){console.log("clearing slot 0"); clearMemory0();}
+		else if (process.base == _MemoryManager.memoryTable.loc1.base) {console.log("clearing slot 1"); clearMemory1();}
+		else if (process.base == _MemoryManager.memoryTable.loc2.base) {console.log("clearing slot 2"); clearMemory2();}		
 		for( var i = process.base; i < arrayOpcodes.length + process.base; i++)
 		{
 			currentOp = arrayOpcodes[i - process.base];
@@ -569,18 +572,20 @@ function shellRun(args)
 	//}
 	else
 	{
-		_StdIn.putText("Running...");
-		//console.log(args);
-		//console.log(_LoadedJobs[args]);
-		_CurrentProcess = _LoadedJobs[args];
-		//console.log(_CurrentProcess);
-		_CurrentProcess.state = RUNNING;
-		_ReadyQueue.enqueue(_CurrentProcess);
-		_ReadyQueue.dequeue();
-	
-		clearCPU();
-		//run the code
-		_CPU.isExecuting = true;
+		
+			_StdIn.putText("Running...");
+			//console.log(args);
+			//console.log(_LoadedJobs[args]);
+			_CurrentProcess = _LoadedJobs[args];
+			//console.log(_CurrentProcess);
+			_CurrentProcess.state = RUNNING;
+			_ReadyQueue.enqueue(_CurrentProcess);
+			_ReadyQueue.dequeue();
+		
+			clearCPU();
+			//run the code
+			_CPU.isExecuting = true;
+		
 	}
 }
 
@@ -592,9 +597,13 @@ function shellRunAll()
 	
 	for ( i in _LoadedJobs )
 	{
+		if(_LoadedJobs[i].state != 4)
+		{
 		process = _LoadedJobs[i];
 		_ReadyQueue.enqueue(process); //missing priority
 		//console.log(_ReadyQueue);
+		}
+
 	}
 	_Scheduler.algorithm = _RoundRobin; //will change this, but should make it automagically use RR
 	_CurrentProcess = _ReadyQueue.dequeue();
@@ -670,16 +679,33 @@ function shellKill(args)
 		
 		if(process)
 		{
-			if(process.status === RUNNING)
+		//kernel trace killing process
+			if(process.state === 3) //running
 			{
-				process.status = TERMINATED;
-			}
+				//_CPU.isExecuting = false;
+				process.state = 4;
+				
+				
+				process.update(TERMINATED, this.PC, this.Acc, this.Xreg, this.Yreg, this.Zflag);
+					
+					//console.log(_MemoryManager.getMemloc());
+				_MemoryManager.setAvail(_MemoryManager.getMemloc());
+					//_MemoryManager.setAvail(_CurrentProcess.slot);
+				console.log(_MemoryManager.getOpenMemLoc());
+				
+				updateReadyQueueDisp();
+				
+		}
 			else
 			{
+				//_CPU.isExecuting = false;
+				process.state = 4;
+				console.log(process.state);
+				process.empty = true;
 				_ReadyQueue.remove(i-1);
-				delete _LoadedJobs[i];
+				
 			}
-			_StdIn.putText("PID has been killed.");
+			_StdIn.putText("PID "+toDie+ " has been killed.");
 		}
 		else
 		{

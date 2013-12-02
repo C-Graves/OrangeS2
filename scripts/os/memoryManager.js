@@ -31,6 +31,11 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 	{
 		return _CurrentProcess.base;
 	}
+	
+	this.getMemloc = function()
+	{
+		return _CurrentProcess.memloc;
+	}
 
 	this.getNext = function()
 	{
@@ -38,6 +43,7 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 		return _Memory[nextest+ this.getBaseValue()];
 		
 	}
+
 
 	this.isValid = function(address)
 	{

@@ -100,7 +100,7 @@ function getDate()
 		var slot;
 	
 		var memLocation = _MemoryManager.getOpenMemLoc();
-		//console.log(memLocation);
+		console.log(memLocation);
 	
 		if(memLocation)
 		{
@@ -113,6 +113,7 @@ function getDate()
 			console.log("slot: " + slot);
 			//pid = _PID++; //increments the global _PID for the next load
 		}
+		
 		else
 		{ 
 			console.log("Hit the else");

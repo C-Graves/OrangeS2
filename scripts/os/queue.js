@@ -47,7 +47,7 @@ function Queue()
 		var savedPart = this.q.splice(0,index);
 		//console.log(savedPart);
 		//console.log(this.q);
-		this.q.shift()
+		this.q.shift();
 		this.q = savedPart.concat(this.q);
 		//console.log(this.q);
 	}
@@ -72,23 +72,45 @@ function Queue()
 function updateReadyQueueDisp() //This isn't quite working, but it does show how it switches.
 {								// Not sure why it is doubling.
 	var totalProcesses = _LoadedJobs.length;
+	var activePID = "";
+	
+	if(_LoadedJobs.length >= 1)
+	{	
+		for(var j = 0; j < totalProcesses; j++)
+			{
+				if(_LoadedJobs[j].state != 4)
+				{
+					//console.log(_LoadedJobs[j].pid);
+					activePID += _LoadedJobs[j].pid +",";
+				}
+			
+			}
+	
+	//console.log(activePID);
+	var splitPIDs = activePID.split(",");
+	//console.log(splitPIDs);
 	
 	if ( totalProcesses > 3 ) 
 	{
+		//if(_LoadedJobs[i].state == 2)
+		//{
+		//	console.log(_LoadedJobs[i].pid);
+		//	
+		//}
 		totalProcesses = 3;
 	} 
 	
 	clearReadyQueueDisp();
 	
-	for(var i = 0; i < totalProcesses; i++)
+	for(var i = 0; i < splitPIDs.length-1; i++)
 	{
-		var RQpid = document.getElementById("rq" +(i+1)+"pid").innerHTML = _LoadedJobs[i].pid;
-		var RQstate = document.getElementById("rq" +(i+1)+"state").innerHTML = translateState(_LoadedJobs[i].state);
-		var RQbase = document.getElementById("rq" +(i+1)+"base").innerHTML = _LoadedJobs[i].base;
-		var RQlimit = document.getElementById("rq" +(i+1)+"limit").innerHTML = _LoadedJobs[i].limit;
+		var RQpid = document.getElementById("rq" +(i+1)+"pid").innerHTML = _LoadedJobs[splitPIDs[i]].pid;
+		var RQstate = document.getElementById("rq" +(i+1)+"state").innerHTML = translateState(_LoadedJobs[splitPIDs[i]].state);
+		var RQbase = document.getElementById("rq" +(i+1)+"base").innerHTML = _LoadedJobs[splitPIDs[i]].base;
+		var RQlimit = document.getElementById("rq" +(i+1)+"limit").innerHTML = _LoadedJobs[splitPIDs[i]].limit;
 		//console.log("pid: " + RQpid + " state: "+RQstate+ " base: "+RQbase+" limit: "+RQlimit); 
 	}
-
+}
 }
 
 function clearReadyQueueDisp()

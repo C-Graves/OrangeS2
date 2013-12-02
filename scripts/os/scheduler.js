@@ -42,6 +42,9 @@ function Scheduler()
 			_CurrentProcess.updateXreg;
 			_CurrentProcess.updateYreg;
 			_CurrentProcess.updateZflag;
+			
+			
+			//clearReadyQueueDisp();
 		
 		}
 		
