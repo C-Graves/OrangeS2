@@ -575,9 +575,9 @@ function shellRun(args)
 		
 			_StdIn.putText("Running...");
 			//console.log(args);
-			//console.log(_LoadedJobs[args]);
+			console.log(_LoadedJobs[args]);
 			_CurrentProcess = _LoadedJobs[args];
-			//console.log(_CurrentProcess);
+			console.log(_CurrentProcess);
 			_CurrentProcess.state = RUNNING;
 			_ReadyQueue.enqueue(_CurrentProcess);
 			_ReadyQueue.dequeue();

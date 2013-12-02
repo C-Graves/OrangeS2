@@ -41,7 +41,7 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 	{
 		var nextest = (++_CPU.PC);
 		return _Memory[nextest+ this.getBaseValue()];
-		
+		console.log("Got next");
 	}
 
 
