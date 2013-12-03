@@ -60,7 +60,7 @@ var _CurCycleCount = 0;
 var _RoundRobin = 0;
 
 var MBR = "000";
-var TSB = "---";
+var TSB = "999";
 var DIREND = 77;
 var FILESTART = 100;
 var FILEEND = 300;

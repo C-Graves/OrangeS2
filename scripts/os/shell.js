@@ -786,11 +786,9 @@ function shellRead(args)
 			for(var i =0; i<dataToRead.length; i++)
 			{
 				_StdIn.putText(dataToRead.charAt(i)); //check for line wrapping
-				//_StdIn.putText(filename.text);
-				//console.log("nothin for now");
+
 			}
 			_StdIn.advanceLine();
-			_StdIn.putText(">");
 			
 		}
 		else
@@ -808,12 +806,15 @@ function shellWrite(args)
 {
 	var filename = args[0];
 	var data = "";
+	//var data = args.join("");
+	
 	
 	for(var i=0; i< args.length; i++)
 	{
-		data += args[i];
+		data += (" "+args[i]);
 	}
-		
+	data = data.substring(filename.length+1);
+	
 	if(filename && data)
 	{
 		var writeResult = krnfsDD.writeFile(filename, data);

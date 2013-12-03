@@ -30,13 +30,6 @@ function krnFileDriverEntry()
 	krnFormat();
 }
 
-function fileSystemKey(track, sector, block)
-{
-	var key = (track+""+sector+""+block);
-	return key;
-
-}
-
 function fileSystemVal(used, track, sector, block, data)
 {
 	var val = (used+""+track+""+sector+""+block+""+ krnFiller(data) );
@@ -106,6 +99,88 @@ function krnSetValOcc(key, data)
 	return ( fileSystemVal(1,t,s,b,data) );
 }
 
+function krnFindD(filename)
+{
+	var keyVal = 0;
+	var valueString;
+	var occupiedBit;
+	var data;
+	var curfilename;
+	
+	for (key in localStorage)
+	{
+		keyVal = parseInt(key);
+		
+		if(keyVal >= 0 && keyVal <= DIREND)
+		{
+			valueString = (localStorage[key]).toString();
+			occupiedBit = valueString.charAt(0);
+			data = valueString.slice(4,valueString.length);
+		
+			if(parseInt(occupiedBit) === 1)
+			{
+				curfilename = data.substring(0, data.indexOf("-"));
+				if(filename === curfilename)
+				{
+					return(key);
+				}
+			}
+		}
+	
+	}
+	return null;
+}
+
+function krnLinkedFileBlocks(firstFKey)
+{
+	var fileList = [firstFKey];
+	var curKey = firstFKey;
+	var curString = "";
+	
+	console.log("firstFKey: "+firstFKey);
+	console.log("curKey: "+curKey);
+	while(curKey.toString() != TSB)
+	{
+		console.log("entered while");
+		curString = localStorage[curKey];
+		console.log(typeof(curString));
+		curStringS = curString.toString();
+		console.log(curStringS);
+		
+		var t = curStringS.charAt(1);
+		var s = curStringS.charAt(2);
+		var b = curStringS.charAt(3);
+		
+		var theKey = (t+""+s+""+b);
+		console.log("theKey: "+theKey);
+		
+		if(theKey != TSB)
+		{
+			fileList.push(theKey);
+		}
+		
+		curKey = theKey;	
+	}
+	
+	return fileList;
+}
+
+function krnMakeLinkFileBlocks(firstKey, curKey)
+{
+	var originalString = localStorage[curKey].toString();
+	var data = originalString.slice(4,originalString.length);
+	
+	var curString = localStorage[curKey].toString();
+	var t = curString.charAt(0);
+	var s = curString.charAt(1);
+	var b = curString.charAt(2);
+	
+	
+	localStorage[firstKey] = fileSystemVal(1,t,s,b,data);
+}
+
+
+
 
 function krnCreateFile(filename)
 {
@@ -131,10 +206,34 @@ function krnCreateFile(filename)
 function krnReadFile(filename)
 {
 
-	//_StdIn.putText("Inside of reading of filename "+filename ".");
 	if(filename)
 	{
-		return "fake test data";
+		var dKey = krnFindD(filename);
+		var valueString = localStorage[dKey].toString();
+		var t = valueString.charAt(1);
+		var s = valueString.charAt(2);
+		var b = valueString.charAt(3);
+		
+		var firstFKey = (t+""+s+""+b);
+		
+		var linkedFiles = krnLinkedFileBlocks(firstFKey);
+		
+		var valueString;
+		var data;
+		var dataList = [];
+	
+		for(i in linkedFiles)
+		{
+			valueString = localStorage[linkedFiles[i]].toString();
+			data = valueString.slice(4,valueString.length);
+			if(data.indexOf("-") != -1)
+			{
+				data = data.substring(0, data.indexOf("-"));
+			}
+			dataList.push(data);
+		}
+	
+		return dataList.toString();
 	}
 
 	else
@@ -145,10 +244,60 @@ function krnReadFile(filename)
 
 function krnWriteFile(filename, data)
 {
+	if(filename)
+	{
+		var dKey = krnFindD(filename);
+		
+		if(dKey){
+			
+			var valueString = localStorage[dKey].toString();
+			var t = valueString.charAt(1);
+			var s = valueString.charAt(2);
+			var b = valueString.charAt(3);
+			
+			var fKey = (t+""+s+""+b);
+			console.log(fKey + ": fKey");
+			
+			if(data.length <= MAXLENGTH)
+			{
+				localStorage[fKey] = fileSystemVal(1, 9, 9, 9, data);
+			}
+			
+			else
+			{
+				var spaceNeeded = Math.ceil( data.length / MAXLENGTH );
+				var dataList = [];
+				
+				for(var i = 0; i < spaceNeeded; i++)
+				{
+					dataList[i] = data.substring((i*MAXLENGTH), ((i+ 1)*MAXLENGTH));
+				}
+			
+				console.log(dataList[0]);
+				localStorage[fKey] = krnSetValOcc(TSB, dataList[0]);
+				
+				var curKey = "";
+				var nextKey = fKey;
+				
+				for(var j = 1; j < dataList.length; j++)
+				{
+					curKey = nextKey;
+					nextKey = krnFindOpenFBlock();
+					
+					localStorage[nextKey] = krnSetValOcc(TSB, dataList[j]);
 
-	//_StdIn.putText("Inside of writing '" + data + "' to filename "+filename ".");
-	
-	return true;
+				}
+			}
+		
+			return true;
+		}
+	}
+
+	else
+	{
+		return "couldn't find filename to read from";
+	}
+
 }
 
 function krnDeleteFile(filename)
@@ -176,15 +325,15 @@ function krnFormat()
 				// block
 				for(var b = 0; b < 8; b++)
 				{
-					fsKey = fileSystemKey(t, s, b);
-					fsValue = fileSystemVal(0, -1, -1, -1, "");					
+					fsKey = (t+""+s+""+b);
+					fsValue = fileSystemVal(0, 9, 9, 9, "");					
 					localStorage[fsKey] = fsValue;
 				}
 			}
 		}
 		
 		// Assign the MBR to TSB[0,0,0]
-		localStorage[MBR] = fileSystemVal(1, -1, -1, -1, "MBR");
+		localStorage[MBR] = fileSystemVal(1, 9, 9, 9, "MBR");
 		
 		return true;
 	
