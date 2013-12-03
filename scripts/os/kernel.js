@@ -35,7 +35,13 @@ function krnBootstrap()      // Page 8.
    krnKeyboardDriver = new DeviceDriverKeyboard();     // Construct it.  TODO: Should that have a _global-style name?
    krnKeyboardDriver.driverEntry();                    // Call the driverEntry() initialization routine.
    krnTrace(krnKeyboardDriver.status);
+   
+   
 
+   krnTrace("Loading the File System Device Driver (fsDD).");
+   krnfsDD = new fsDD();   
+   krnfsDD.driverEntry();
+   krnTrace(krnfsDD.status);
    //
    // ... more?
    //
@@ -84,6 +90,8 @@ function krnOnCPUClockPulse()
 	theDateTime.innerHTML = ("Time & Date: "+getDate()); //not fancy but a good start
 	
 	updateReadyQueueDisp();
+	
+	updateFileSystem();
 	
 	if (_KernelInterruptQueue.getSize() > 0)    
     {

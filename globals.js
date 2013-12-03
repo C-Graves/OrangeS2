@@ -44,9 +44,12 @@ var _DefaultFontFamily = "sans";  // Ignored, I think. The was just a place-hold
 var _DefaultFontSize = 13;
 var _FontHeightMargin = 4;        // Additional space added to font size when advancing a line.
 
+var MAXLENGTH = 60;	//for creating file
+
 var _Memory = null;
 var _MemoryManager = null;
 var _MemoryDisplayCells = null;
+var _FileSystemDisplayCells = null;
 var _PID = 0;
 var _LoadedJobs = null;	//_LoadedJobs is the resident list, sorry, LoadedJobs is a way more obvious name
 var _CurrentProcess = null;
@@ -55,6 +58,12 @@ var _Scheduler = null;
 var _Quantum = 6;
 var _CurCycleCount = 0;
 var _RoundRobin = 0;
+
+var MBR = "000";
+var TSB = "---";
+var DIREND = 77;
+var FILESTART = 100;
+var FILEEND = 300;
 
 
 // Default the OS trace to be on.
@@ -78,6 +87,7 @@ var _SarcasticMode = false;
 
 // Global Device Driver Objects - page 12
 var krnKeyboardDriver = null;
+var krnfsDD = null;
 
 // For testing...
 var _GLaDOS = null;

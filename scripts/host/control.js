@@ -39,7 +39,9 @@ function hostInit()
 	//Set these up here, otherwise glados wouldn't work
 	_Memory = new Memory();
 	_MemoryManager = new memoryManager();
+	_fsDD = new fsDD();
 	makeMemoryTable();
+	makeFileSystem();
 	_LoadedJobs = new Array();
 	_ReadyQueue = new Queue();
 	_Scheduler = new Scheduler();

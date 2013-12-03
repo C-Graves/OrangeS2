@@ -157,7 +157,42 @@ function shellInit() {
     sc.description = "<PID> - Kills the specified PID.";
     sc.function = shellKill;
     this.commandList[this.commandList.length] = sc; 
-		
+	
+	//create<filename>					// create <filename> - creates the file filename.
+	sc = new ShellCommand();
+    sc.command = "create";
+    sc.description = "<filename> - Creates new file called filename.";
+    sc.function = shellCreate;
+    this.commandList[this.commandList.length] = sc; 
+	
+	//read<filename>					// read <filename> - read and display contents of filename.
+	sc = new ShellCommand();
+    sc.command = "read";
+    sc.description = "<filename> - Read and display filename.";
+    sc.function = shellRead;
+    this.commandList[this.commandList.length] = sc; 
+	
+	//write<filename> "data"			// write <filename> "data" - writes data to filename.
+	sc = new ShellCommand();
+    sc.command = "write";
+    sc.description = "<filename> 'data' - Write data to filename.";
+    sc.function = shellWrite;
+    this.commandList[this.commandList.length] = sc; 	
+
+	//delete<filename>					// delete <filename> - Remove filename from storage.
+	sc = new ShellCommand();
+    sc.command = "delete";
+    sc.description = "<filename> - Remove filename from storage.";
+    sc.function = shellDelete;
+    this.commandList[this.commandList.length] = sc;
+	
+	//format							// format - Initialize TSB of File System.
+	sc = new ShellCommand();
+    sc.command = "format";
+    sc.description = "- Initialize TSB of File System.";
+    sc.function = shellFormat;
+    this.commandList[this.commandList.length] = sc;
+
     //
     // Display the initial prompt.
     this.putPrompt();
@@ -714,5 +749,135 @@ function shellKill(args)
 	
 	}
 }
+
+
+function shellCreate(args)
+{
+	var filename = args[0];
+	
+	if(filename)
+	{
+		var createResult = krnfsDD.createFile(filename);
+		
+		if (createResult === true)
+		{
+			_StdIn.putText("Creation of filename "+filename+ ": success.");
+		}
+		else
+		{
+			_StdIn.putText("Creation of filename failed.");
+		}
+	}
+	else
+	{
+		_StdIn.putText("Please enter a filename to create.");
+	}
+}
+
+function shellRead(args)
+{
+	var filename = args[0];
+	
+	if(filename)
+	{
+		var dataToRead = krnfsDD.readFile(filename);
+		if(dataToRead.length > 0)
+		{
+			for(var i =0; i<dataToRead.length; i++)
+			{
+				_StdIn.putText(dataToRead.charAt(i)); //check for line wrapping
+				//_StdIn.putText(filename.text);
+				//console.log("nothin for now");
+			}
+			_StdIn.advanceLine();
+			_StdIn.putText(">");
+			
+		}
+		else
+		{
+			_StdIn.putText("Read Failure: No data found.");
+		}
+	}
+	else
+	{
+		_StdIn.putText("Please enter a filename to read.");
+	}
+}
+
+function shellWrite(args)
+{
+	var filename = args[0];
+	var data = "";
+	
+	for(var i=0; i< args.length; i++)
+	{
+		data += args[i];
+	}
+		
+	if(filename && data)
+	{
+		var writeResult = krnfsDD.writeFile(filename, data);
+		
+		if(writeResult === true)
+		{
+			_StdIn.putText("Write to "+filename+ " was successful.");
+		}
+		else
+		{
+			_StdIn.putText("Write failure.");
+		}
+		
+	}
+			
+	else
+	{
+		if(!filename) _StdIn.putText("Please enter a filename");
+		if(!data) _StdIn.putText("Please enter data.");
+	}
+}
+
+
+function shellDelete(args)
+{
+	var filename = args[0];
+
+		if(filename)
+		{
+			var deleteResult = krnfsDD.deleteFile(filename);
+			
+			if(deleteResult === true)
+			{
+				_StdIn.putText("Delete successful.");
+			}
+			else
+			{
+				_StdIn.putText("Delete failure. Filename does not exist.");
+			}
+		}
+		else
+		{
+			_StdIn.putText("Please enter a filename to delete.");
+			
+		}
+		
+}
+
+function shellFormat()
+{
+	
+	var formatResult = krnfsDD.format();
+	
+	if(formatResult === true)
+	{
+		_StdIn.putText("Format successful.");
+	}
+	else
+	{
+		_StdIn.putText("The file system failed to format.");
+	}		
+		
+}
+
+
 
 

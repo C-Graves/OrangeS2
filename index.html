@@ -29,6 +29,8 @@
    <script type="text/javascript" src="scripts/os/kernel.js"></script>
    <script type="text/javascript" src="scripts/os/pcb.js"></script>
    <script type="text/javascript" src="scripts/os/scheduler.js"></script>
+   <script type="text/javascript" src="scripts/os/fsDD.js"></script>
+   
 
    
    <!-- Other Routines -->
@@ -88,7 +90,7 @@
          <br>
          <textarea name="taLog"
                    id  ="taLog"
-                   rows="26"
+                   rows="15"
                    cols="48"
          ></textarea>
       </label>
@@ -100,24 +102,13 @@
          <br>
          <textarea name="taProgramInput"
                    id  ="taProgramInput"
-                   rows="8"
+                   rows="6"
                    cols="48"
          ></textarea>
       </label>
    </div>
-   
-    <div id="memorySpot">
-	<label style="background-color:#FF8040;font-weight:bold;">
-		Memory Table
-		<br>
-		<table id="memoryTable" style="margin:4px; width:500px; height:500px; float:left; background-color:#FF8040;" border="1">		
-
-		</table>
-	</label>
-	</div>
-   
-	
-	<div id="cpuStatus" style="margin-left:520px;">
+ <div>
+   <div id="cpuStatus" style="margin-left:520px;">
 		<table id="cpuTable" border="1" style="background-color:#FF8040;">
 			<tr align="center">
 				<tr>
@@ -150,7 +141,7 @@
 </div>
 
 <div id="readyDisplay" style="margin-left:520px;">
-		<table id="rqTable" border="1" style="background-color:#FF8040;">
+	<table id="rqTable" border="1" style="background-color:#FF8040;">
 			<tr align="center">
 				<tr>
 					<th colspan="6">
@@ -173,7 +164,7 @@
 						<td id="rq2state"colspan="3"> --- </td>
 						<td id="rq2base"> --- </td>
 						<td id="rq2limit"> --- </td>
-					<</tr>
+					</tr>
 					<tr id="rq3">
 						<td id="rq3pid"> --- </td>
 						<td id="rq3state"colspan="3"> --- </td>
@@ -183,7 +174,31 @@
 			</tr>		
 		</table>	
 </div>
+</div>   
+   
+   
+   
+    <div id="memorySpot">
+	<label style="background-color:#FF8040;font-weight:bold;">
+		Memory Table
+		<br>
+		<table id="memoryTable" style="margin:4px; width:500px; height:500px; float:left; background-color:#FF8040;" border="1">		
 
+		</table>
+	</label>
+	</div>
+	
+    <div id="fileSpot">
+	<label style="background-color:#FF8040;font-weight:bold;">
+		File System
+		<br>
+		<table id="fileTable" style="margin:4px; width:500px; height:500px; float:left; background-color:#FF8040;" border="1">		
+
+		</table>
+	</label>
+	</div>
+	
+	
 
 
 
