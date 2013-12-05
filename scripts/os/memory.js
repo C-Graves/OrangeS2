@@ -26,6 +26,7 @@ function makeMemoryTable() //automagically
 		for( var j = 0; j<9; j++ )
 		{
 			cells[i][j] = document.createElement("td");
+			cells[i][j].style.width="auto";
 			if (j === 0)
 			{
 				var pos = (i*8).toString(16).toUpperCase();
@@ -34,6 +35,7 @@ function makeMemoryTable() //automagically
 				else if (pos.length === 3) {pos = "$0"+pos;}
 				else{pos="$"+pos;}
 				cells[i][j].innerHTML = (pos);
+				cells[i][j].style.width="auto";
 			}
 			else {cells[i][j].innerHTML = "00";}
 			rows[rows.length-1].appendChild(cells[i][j]);

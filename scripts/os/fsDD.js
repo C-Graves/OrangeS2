@@ -51,10 +51,11 @@ function krnFindOpenDBlock()
 			valueString = localStorage[key].toString();
 			console.log(valueString);
 			occupiedBit = valueString.charAt(0);
-			console.log(occupiedBit);
+			console.log("occupied bit " +occupiedBit);
 		
 			if(parseInt(occupiedBit) === 0)
 			{
+				krnSetValOcc(key,"");
 				return(key);
 			}
 		}
@@ -76,10 +77,14 @@ function krnFindOpenFBlock()
 		if(keyVal >= FILESTART && keyVal <= FILEEND)
 		{
 			valueString = localStorage[key].toString();
+			
 			occupiedBit = valueString.charAt(0);
 		
 			if(parseInt(occupiedBit) === 0)
 			{
+				console.log(key + " found at this key");
+				krnSetValOcc(key,"");
+				console.log(localStorage[key]);
 				return(key);
 			}
 		}
@@ -139,7 +144,7 @@ function krnLinkedFileBlocks(firstFKey)
 	
 	console.log("firstFKey: "+firstFKey);
 	console.log("curKey: "+curKey);
-	while(curKey.toString() != TSB)
+	while(curKey.toString() != (TSB))
 	{
 		console.log("entered while");
 		curString = localStorage[curKey];
@@ -220,7 +225,7 @@ function krnReadFile(filename)
 		
 		var valueString;
 		var data;
-		var dataList = [];
+		var dataRead = "";
 	
 		for(i in linkedFiles)
 		{
@@ -230,10 +235,9 @@ function krnReadFile(filename)
 			{
 				data = data.substring(0, data.indexOf("-"));
 			}
-			dataList.push(data);
+			dataRead += data;
 		}
-	
-		return dataList.toString();
+		return dataRead;
 	}
 
 	else
@@ -272,21 +276,32 @@ function krnWriteFile(filename, data)
 				{
 					dataList[i] = data.substring((i*MAXLENGTH), ((i+ 1)*MAXLENGTH));
 				}
-			
-				console.log(dataList[0]);
-				localStorage[fKey] = krnSetValOcc(TSB, dataList[0]);
 				
-				var curKey = "";
-				var nextKey = fKey;
+				var curKey = fKey;
+				var nextKey = "";
 				
-				for(var j = 1; j < dataList.length; j++)
+				for(var j = 0; j < dataList.length; j++)
 				{
-					curKey = nextKey;
-					nextKey = krnFindOpenFBlock();
+					console.log(dataList.length + "dl and j" + j);
+					console.log(dataList[j]);
 					
-					localStorage[nextKey] = krnSetValOcc(TSB, dataList[j]);
-
+					nextKey = krnFindOpenFBlock();
+					console.log("being stored in "+nextKey);
+					
+					if( j < dataList.length-1)
+					{						
+						localStorage[curKey] = fileSystemVal(1, nextKey.charAt(0), nextKey.charAt(1), nextKey.charAt(2), dataList[j]);
+						curKey = nextKey;
+						//nextKey = krnFindOpenFBlock();
+					}
+					else if (j === dataList.length-1)
+					{
+						localStorage[nextKey] = fileSystemVal(1, 9, 9, 9, dataList[dataList.length-1]);
+					}
+					else{ }//do nothing
 				}
+				
+				
 			}
 		
 			return true;
@@ -295,16 +310,51 @@ function krnWriteFile(filename, data)
 
 	else
 	{
-		return "couldn't find filename to read from";
+		return false; //"couldn't find filename to read from";
 	}
 
 }
 
 function krnDeleteFile(filename)
 {
-
-	//_StdIn.putText("Inside of deleting the filename "+filename ".");
-	return true;
+	var dKey = krnFindD(filename);
+	
+	if(dKey){
+		var valueString = localStorage[dKey].toString();
+		var t = valueString.charAt(1);
+		var s = valueString.charAt(2);
+		var b = valueString.charAt(3);
+	
+		localStorage[dKey] = fileSystemVal(0, 9, 9, 9, "");
+	
+		var firstFKey = (t+""+s+""+b);
+		
+		var linkedFiles = krnLinkedFileBlocks(firstFKey);
+		
+		if(linkedFiles.length > 1)
+		{
+			var curKey = firstFKey;
+			var nextKey = "";
+			
+			for(var j = 0; j < linkedFiles.length; j++)
+			{
+				nextKey = localStorage[curKey].toString().slice(1,4);
+				localStorage[curKey] = fileSystemVal(0, 9, 9, 9, "");
+				curKey = nextKey;
+			}
+		}	
+		else
+		{
+			localStorage[firstFKey] = fileSystemVal(0, 9, 9, 9, "");
+		}
+		
+		return true;
+	}
+	
+	else
+	{
+		return false; //couldn't delete because filename not found
+	}
 
 }
 

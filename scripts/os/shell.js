@@ -852,7 +852,7 @@ function shellDelete(args)
 			}
 			else
 			{
-				_StdIn.putText("Delete failure. Filename does not exist.");
+				_StdIn.putText("Delete failure. Filename "+ filename + " does not exist.");
 			}
 		}
 		else
