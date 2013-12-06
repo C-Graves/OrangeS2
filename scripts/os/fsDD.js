@@ -20,7 +20,7 @@ function fsDD()
 	this.deleteFile = krnDeleteFile;
 	this.format = krnFormat;
 
-	
+	this.listFiles = krnListFiles;
 	
 }
 
@@ -33,6 +33,7 @@ function krnFileDriverEntry()
 function fileSystemVal(used, track, sector, block, data)
 {
 	var val = (used+""+track+""+sector+""+block+""+ krnFiller(data) );
+	//console.log("This is val "+val);
 	return val;
 } 
 
@@ -64,6 +65,7 @@ function krnFindOpenDBlock()
 	return null;
 }
 
+
 function krnFindOpenFBlock()
 {
 	var keyVal = 0;
@@ -77,13 +79,15 @@ function krnFindOpenFBlock()
 		if(keyVal >= FILESTART && keyVal <= FILEEND)
 		{
 			valueString = localStorage[key].toString();
+			console.log("valueString to check: "+valueString+ " at key value "+key);
 			
 			occupiedBit = valueString.charAt(0);
 		
 			if(parseInt(occupiedBit) === 0)
 			{
 				console.log(key + " found at this key");
-				krnSetValOcc(key,"");
+				localStorage[key] = fileSystemVal(1,valueString.charAt(1),valueString.charAt(2),valueString.charAt(3),"");
+				//krnSetValOcc(key,"");
 				console.log(localStorage[key]);
 				return(key);
 			}
@@ -100,6 +104,7 @@ function krnSetValOcc(key, data)
 	var t = valueString.charAt(0);
 	var s = valueString.charAt(1);
 	var b = valueString.charAt(2);
+	
 	
 	return ( fileSystemVal(1,t,s,b,data) );
 }
@@ -213,36 +218,42 @@ function krnReadFile(filename)
 
 	if(filename)
 	{
-		var dKey = krnFindD(filename);
-		var valueString = localStorage[dKey].toString();
-		var t = valueString.charAt(1);
-		var s = valueString.charAt(2);
-		var b = valueString.charAt(3);
-		
-		var firstFKey = (t+""+s+""+b);
-		
-		var linkedFiles = krnLinkedFileBlocks(firstFKey);
-		
-		var valueString;
-		var data;
-		var dataRead = "";
 	
-		for(i in linkedFiles)
+		var dKey = krnFindD(filename);
+			
+		if(dKey)
 		{
-			valueString = localStorage[linkedFiles[i]].toString();
-			data = valueString.slice(4,valueString.length);
-			if(data.indexOf("-") != -1)
+			var valueString = localStorage[dKey].toString();
+			var t = valueString.charAt(1);
+			var s = valueString.charAt(2);
+			var b = valueString.charAt(3);
+			
+			var firstFKey = (t+""+s+""+b);
+			
+			var linkedFiles = krnLinkedFileBlocks(firstFKey);
+			
+			var valueString;
+			var data;
+			var dataRead = "";
+		
+			for(i in linkedFiles)
 			{
-				data = data.substring(0, data.indexOf("-"));
+				valueString = localStorage[linkedFiles[i]].toString();
+				data = valueString.slice(4,valueString.length);
+				if((data.indexOf("-") != -1) & (data.charAt(data.indexOf("-")+1) === "-"))
+				{
+					data = data.substring(0, data.indexOf("-"));
+				}
+				dataRead += data;
 			}
-			dataRead += data;
+			return dataRead;
 		}
-		return dataRead;
+		else{console.log("didn't find the filename"); return false;}
 	}
 
 	else
 	{
-		return "couldn't find filename to read from";
+		return false; //"couldn't find filename to read from";
 	}
 }
 
@@ -278,10 +289,45 @@ function krnWriteFile(filename, data)
 				}
 				
 				var curKey = fKey;
-				var nextKey = "";
+				var nextKey = krnFindOpenFBlock();
+				console.log(localStorage[key]);
+								
+				localStorage[curKey] = fileSystemVal(1, nextKey.charAt(0), nextKey.charAt(1), nextKey.charAt(2), dataList[0]);
+				console.log(localStorage[curKey]);
+				curKey = nextKey;
+				//nextKey = krnFindOpenFBlock();
+				console.log("starting the loop with curKey of "+curKey+" and nextKey of "+nextKey);
+				var j = 1;
+				while( j < dataList.length-1)
+				{
+					console.log(dataList.length + "dl and j" + j + " trying to store "+dataList[j]);
+					
+					nextKey = krnFindOpenFBlock();
+					console.log("now nextKey is " + nextKey);
+					//if(nextKey === curKey){console.log("hit the if");nextKey = krnFindOpenFBlock(); }
+					console.log("!!!!!!!!! nextKey: " + nextKey);
+					localStorage[curKey] = fileSystemVal(1, nextKey.charAt(0), nextKey.charAt(1), nextKey.charAt(2), dataList[j]);
+					//localStorage[curKey] = fileSystemVal(1, 9, 9, 9, dataList[j]);
+					console.log("curKey was: " +curKey);
+					curKey = nextKey;		
+					console.log("curKey is now: " +curKey);
+					//nextKey = krnFindOpenFBlock();				
+					//krnMakeLinkFileBlocks(nextKey, curKey);
+					
+					j++;
+				}
+				//nextKey = krnFindOpenFBlock();
+				console.log(dataList.length + "dl and j" + j);
+				console.log(dataList[j]);
 				
+				
+				localStorage[curKey] = fileSystemVal(1, 9, 9, 9, dataList[dataList.length-1]);
+				
+				
+				/*
 				for(var j = 0; j < dataList.length; j++)
 				{
+					console.log("started for loop");
 					console.log(dataList.length + "dl and j" + j);
 					console.log(dataList[j]);
 					
@@ -289,18 +335,22 @@ function krnWriteFile(filename, data)
 					console.log("being stored in "+nextKey);
 					
 					if( j < dataList.length-1)
-					{						
+					{		
+						console.log("in the if");
 						localStorage[curKey] = fileSystemVal(1, nextKey.charAt(0), nextKey.charAt(1), nextKey.charAt(2), dataList[j]);
+						console.log("just did this: " + localStorage[curKey]);
 						curKey = nextKey;
 						//nextKey = krnFindOpenFBlock();
 					}
 					else if (j === dataList.length-1)
 					{
+						console.log("in the elseif");
 						localStorage[nextKey] = fileSystemVal(1, 9, 9, 9, dataList[dataList.length-1]);
+						console.log("just did this: " + localStorage[curKey]);
 					}
 					else{ }//do nothing
 				}
-				
+				*/
 				
 			}
 		
@@ -442,6 +492,46 @@ function updateFileSystem()
 		_FileSystemDisplayCells[i][1].innerHTML = localStorage[key];
 		i++;
 	}
+}
+
+function krnListFiles()
+{
+
+	var keyVal = 0;
+	var files = [];
+	var valueString;
+	var data;
+	var occupiedBit;
+	var curFile;
+	
+	for (key in localStorage)
+	{
+		keyVal = parseInt(key);
+		
+		if(keyVal >= 0 && keyVal <= DIREND)
+		{
+			valueString = localStorage[key].toString();
+			//console.log(valueString);
+			occupiedBit = valueString.charAt(0);
+			//console.log("occupied bit " +occupiedBit);
+			data = valueString.slice(4,valueString.length);
+		
+			if(parseInt(occupiedBit) === 1)
+			{
+				curFile = data;
+				
+				if(curFile.indexOf("-") != -1)
+				{
+					curFile = data.substring(0, data.indexOf("-"));
+				}
+				files.push(curFile);
+			}
+
+		}
+	
+	}
+	console.log("length of files is: "+files.length);
+	return files;
 }
 
 

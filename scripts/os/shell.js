@@ -192,6 +192,15 @@ function shellInit() {
     sc.description = "- Initialize TSB of File System.";
     sc.function = shellFormat;
     this.commandList[this.commandList.length] = sc;
+	
+	//ls							// ls - List all files on disk.
+	sc = new ShellCommand();
+    sc.command = "ls";
+    sc.description = "- List all files currently on disk.";
+    sc.function = shellLS;
+    this.commandList[this.commandList.length] = sc;
+	
+	
 
     //
     // Display the initial prompt.
@@ -793,7 +802,7 @@ function shellRead(args)
 		}
 		else
 		{
-			_StdIn.putText("Read Failure: No data found.");
+			_StdIn.putText("Read Failure.");
 		}
 	}
 	else
@@ -852,7 +861,14 @@ function shellDelete(args)
 			}
 			else
 			{
-				_StdIn.putText("Delete failure. Filename "+ filename + " does not exist.");
+				if(filename === "mbr" || filename === "MBR")
+				{
+					_StdIn.putText("Delete failure. Cannot delete the MBR.");
+				}
+				else
+				{
+					_StdIn.putText("Delete failure. Filename "+ filename + " does not exist.");
+				}
 			}
 		}
 		else
@@ -877,6 +893,31 @@ function shellFormat()
 		_StdIn.putText("The file system failed to format.");
 	}		
 		
+}
+
+
+
+function shellLS()
+{
+	var files = krnfsDD.listFiles();
+	
+	if(files.length > 0)
+	{
+		_StdIn.putText("The current file names are: ");
+		_StdIn.advanceLine();
+		
+		for(i in files)
+		{
+			_StdIn.putText(files[i]);
+			_StdIn.advanceLine();
+		}
+
+	}
+	else
+	{
+		_StdIn.putText("There are currently no files on disk.");
+	}
+
 }
 
 
