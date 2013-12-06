@@ -1,6 +1,6 @@
 //PCB
 
-function processControlBlock(state, pid, PC, base, limit, memloc) // 
+function processControlBlock(state, pid, PC, base, limit, memloc, priority) // 
 {
 	this.state = state; 		//ready, terminated, 
 	this.pid = pid;				//PID
@@ -8,7 +8,7 @@ function processControlBlock(state, pid, PC, base, limit, memloc) //
 	this.base = base;			//base for mem location
 	this.limit = limit;			//limit for mem location
 	this.memloc = memloc;		//location in memory 0 1 2
-	
+	this.priority = priority;	//priority assigned
 	
 	this.Acc = 0;
 	this.Xreg = 0;

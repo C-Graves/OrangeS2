@@ -21,7 +21,12 @@ function Queue()
         return (this.q.length == 0);    
     };
 
-    this.enqueue = function(element) {
+    //this.enqueue = function(element,priority) {
+	//	console.log("enqueued");
+    //    this.q.push(element,priority); //
+		
+    //};
+	this.enqueue = function(element) {
         this.q.push(element);        
     };
     
@@ -41,7 +46,7 @@ function Queue()
 		}
 		else {return null;}
 	
-	}
+	};
 	
 	this.remove = function(index){
 		var savedPart = this.q.splice(0,index);
@@ -50,7 +55,7 @@ function Queue()
 		this.q.shift();
 		this.q = savedPart.concat(this.q);
 		//console.log(this.q);
-	}
+	};
 	
 	//this.getItem = function(index){
 	//	var contains = contents[index];
@@ -67,6 +72,12 @@ function Queue()
         }
         return retVal;
     };
+	
+	this.sort = function(a,b) {
+	
+	(function(a,b){return a.pid - b.pid});
+	
+	};
 }
 
 function updateReadyQueueDisp() //This isn't quite working, but it does show how it switches.
@@ -134,5 +145,3 @@ function translateState(num)
 	else if (num === 4) {return "TERMINATED";}
 	else{return num;}
 }
-
-

@@ -58,6 +58,9 @@ var _Scheduler = null;
 var _Quantum = 6;
 var _CurCycleCount = 0;
 var _RoundRobin = 0;
+var _FCFS = 1;
+var _Priority = 2;
+var _DefaultPriority = 9;
 
 var MBR = "000";
 var TSB = "999";

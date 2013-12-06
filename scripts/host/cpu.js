@@ -46,10 +46,17 @@ function Cpu() {
         krnTrace("CPU cycle");
         // TODO: Accumulate CPU usage and profiling statistics here.
         // Do the real work here. Be sure to set this.isExecuting appropriately.
-		//console.log(_Scheduler.algorithm);
+		console.log("ALGORITHM IS... "+ _Scheduler.algorithm);
 		if(_Scheduler.algorithm === _RoundRobin)
 		{
 			if(_CurCycleCount > _Quantum)
+			{
+				_Scheduler.contextSwitch();
+			}
+		}
+		else if(_Scheduler.algorithm === _FCFS || _Scheduler.algorithm == _Priority)
+		{
+			if(_CurrentProcess.state === TERMINATED)
 			{
 				_Scheduler.contextSwitch();
 			}

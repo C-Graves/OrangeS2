@@ -88,12 +88,35 @@ function getDate()
 }
 
 //since this helps the shell already, I'll put program loader helper here
-	function newProcess()
+	function newProcess(passedPriority)
 	{
 		var state = NEW;
 		var pid = _PID++;
 		var pc = 0;
 		
+		
+		var priority;
+		
+		console.log("When created, the ALGORITHM IS... "+ _Scheduler.algorithm);
+		if(_Scheduler.algorithm === _RoundRobin)
+		{
+			priority = _DefaultPriority;
+		}
+		else if(_Scheduler.algorithm === _FCFS)
+		{
+			priority = pid;
+		}
+		else if(_Scheduler.algorithm === _Priority)
+		{
+			if (passedPriority.toString() != "undefined")
+			{
+				priority = passedPriority;
+			}
+			else
+			{
+				priority = _DefaultPriority;
+			}
+		}
 		
 		var base;
 		var limit;
@@ -123,7 +146,7 @@ function getDate()
 		
 		} //saved to disk, todo
 	
-		return (new processControlBlock(state, pid, pc, base, limit, slot));
+		return (new processControlBlock(state, pid, pc, base, limit, slot, priority));
 	
 	}
 	

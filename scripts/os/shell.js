@@ -97,7 +97,7 @@ function shellInit() {
 	// load
     sc = new ShellCommand();
     sc.command = "load";
-    sc.description = "- Loads data from User Program Input.";
+    sc.description = "<priority (optional)> - Loads data from User Program Input.";
     sc.function = shellLoad;
     this.commandList[this.commandList.length] = sc;
 	
@@ -200,7 +200,19 @@ function shellInit() {
     sc.function = shellLS;
     this.commandList[this.commandList.length] = sc;
 	
-	
+	//setschedule						// setschedule - Set CPU scheduling algorithm.
+	sc = new ShellCommand();
+    sc.command = "setschedule";
+    sc.description = "<rr/fcfs/priority> - Set CPU algorithm.";
+    sc.function = shellSetSchedule;
+    this.commandList[this.commandList.length] = sc;
+
+	//getschedule						// setschedule - Set CPU scheduling algorithm.
+	sc = new ShellCommand();
+    sc.command = "getschedule";
+    sc.description = "- Get current CPU algorithm.";
+    sc.function = shellGetSchedule;
+    this.commandList[this.commandList.length] = sc;	
 
     //
     // Display the initial prompt.
@@ -496,6 +508,13 @@ function shellWhereami(args)
 
 function shellLoad(args)
 {
+	var priority = -1;
+	
+	if(args[0])
+	{
+		priority = parseInt(args[0]);
+	}
+	
 	var upInput = document.getElementById("taProgramInput");
 	var text = upInput.value;
 	text = trim(text);
@@ -511,7 +530,7 @@ function shellLoad(args)
 	{
 		_StdIn.putText("Input entered is valid.");
 	
-		var process = newProcess(); 		
+		var process = newProcess(priority); 		
 		
 		clearCPU();	//?
 		//clearMemory();
@@ -545,8 +564,17 @@ function shellLoad(args)
 		//console.log(_LoadedJobs);
 		//console.log(_LoadedJobs[process.pid]);
 		
-		_StdIn.advanceLine();
-		_StdIn.putText("Process with PID " + process.pid + " added to memory");
+		if(priority === -1) //optional parameter left out
+		{
+			_StdIn.advanceLine();
+			_StdIn.putText("Process with PID " + process.pid + " added to memory");
+		}
+		else
+		{
+			_StdIn.advanceLine();
+			_StdIn.putText("Process with PID " + process.pid + " added to memory with priority "+ priority);
+		}
+		
 		
 	}
 	else 
@@ -623,7 +651,7 @@ function shellRun(args)
 			_CurrentProcess = _LoadedJobs[args];
 			console.log(_CurrentProcess);
 			_CurrentProcess.state = RUNNING;
-			_ReadyQueue.enqueue(_CurrentProcess);
+			_ReadyQueue.enqueue(_CurrentProcess);//, _CurrentProcess.priority);
 			_ReadyQueue.dequeue();
 		
 			clearCPU();
@@ -644,12 +672,12 @@ function shellRunAll()
 		if(_LoadedJobs[i].state != 4)
 		{
 		process = _LoadedJobs[i];
-		_ReadyQueue.enqueue(process); //missing priority
+		_ReadyQueue.enqueue(process);//, process.priority); //missing priority
 		//console.log(_ReadyQueue);
 		}
 
 	}
-	_Scheduler.algorithm = _RoundRobin; //will change this, but should make it automagically use RR
+	//_Scheduler.algorithm = _RoundRobin; //will change this, but should make it automagically use RR
 	_CurrentProcess = _ReadyQueue.dequeue();
 	clearCPU();
 	_CPU.isExecuting = true;
@@ -920,6 +948,64 @@ function shellLS()
 
 }
 
+function shellSetSchedule(args)
+{
+	var newAlgorithm = args[0];
+	
+	if(newAlgorithm)
+	{
+		if(newAlgorithm === "rr" || newAlgorithm === "RR")
+		{
+			_Scheduler.algorithm = _RoundRobin;
+			_StdIn.putText("Scheduling algorithm successfully changed to " +newAlgorithm);
+		}
+		else if(newAlgorithm === "fcfs" || newAlgorithm === "FCFS")
+		{
+			_Scheduler.algorithm = _FCFS;
+			_StdIn.putText("Scheduling algorithm successfully changed to " +newAlgorithm);
+		}
+		else if(newAlgorithm === "priority"||newAlgorithm === "PRIORITY")
+		{
+			_Scheduler.algorithm = _Priority;
+			//_ReadyQueue.q.sort(function(a,b){return a.priority - b.priority});
+			//console.log(_ReadyQueue.q.sort(function(a,b){return a.priority - b.priority}));
+			//console.log("sorted?");
+			_StdIn.putText("Scheduling algorithm successfully changed to " +newAlgorithm);
+		}		
+		else
+		{
+			console.log("hit the else. AKA default");
+			_Scheduler.algorithm = _RoundRobin;
+			_StdIn.putText("Undefined scheduling name. Algorithm is now rr.");
+		}
+	}
+	else
+	{
+		console.log("failed to change");
+		var currentAlgorithm = _Scheduler.algorithm;
+		if(currentAlgorithm === 0){currentAlgorithm = "rr";}
+		else if(currentAlgorithm === 1){currentAlgorithm = "fcfs";}
+		else if(currentAlgorithm === 2){currentAlgorithm = "priority";}
+		_StdIn.putText("No algorithm provided. Algorithm is still " + currentAlgorithm);
 
+	}
+}
+
+function shellGetSchedule()
+{
+	var currentAlgorithm = _Scheduler.algorithm;
+	
+	if(currentAlgorithm === 0)
+	{	_StdIn.putText("Round Robin is the currently selected.");	}
+	
+	else if(currentAlgorithm === 1)
+	{	_StdIn.putText("FCFS is the currently selected.");	}
+	
+	else if(currentAlgorithm === 2)
+	{	_StdIn.putText("Priority is the currently selected.");	}
+	
+	else{ _StdIn.putText("An error occured finding the algorithm.");}
+
+}
 
 

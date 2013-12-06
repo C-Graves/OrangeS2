@@ -44,6 +44,7 @@ function hostInit()
 	makeFileSystem();
 	_LoadedJobs = new Array();
 	_ReadyQueue = new Queue();
+	//_ReadyQueue = new PriorityQueue();
 	_Scheduler = new Scheduler();
 
    // Check for our testing and enrichment core.

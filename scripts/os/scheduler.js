@@ -1,12 +1,15 @@
 function Scheduler()
 {
+	console.log(this.algorithm);
 	this.algorithm = _RoundRobin; //will change this, but should make it automagically use RR
+	console.log(this.algorithm);
+	this.quantum = _Quantum;
+		
+	//this.algorithm = _RoundRobin
+	
 	this.contextSwitch = function()
 	{
-		this.quantum = _Quantum;
-		
-		this.algorithm = _RoundRobin
-		
+			
 		//console.log("Peeking! "+ _ReadyQueue.peek());
 		if(_ReadyQueue.peek() !=null)
 		{
@@ -29,10 +32,11 @@ function Scheduler()
 				
 				updateReadyQueueDisp();
 				
-				_ReadyQueue.enqueue(_CurrentProcess);
+				_ReadyQueue.enqueue(_CurrentProcess);//, _CurrentProcess.priority);
 			}
 			
 			_CurrentProcess = _ReadyQueue.dequeue();
+			
 			
 			_CPU.update(_CurrentProcess.PC, _CurrentProcess.Acc, _CurrentProcess.Xreg,
 							_CurrentProcess.Yreg, _CurrentProcess.Zflag);
