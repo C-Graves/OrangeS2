@@ -143,10 +143,11 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 		var opcode = krnfsDD.readFile(file);
 		var opcodeArray = opcode.split(/\s/);
 		var memSlot = _MemoryManager.getOpenMemLoc();
+		console.log("*********************************************************************************************"+memSlot);
 		
-		process.base = memoryTable.base;
-		process.limit = memoryTable.limit;
-		process.slot = memoryTable.memloc;
+		process.base = memSlot.base;
+		process.limit = memSlot.limit;
+		process.slot = memSlot.memloc;
 		process.state = LOADED;
 		
 		this.setAvail(process.slot);
@@ -163,6 +164,7 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 	
 	this.rollOut = function(process)
 	{
+		console.log(process.pid+" = pid");
 		var file = "process"+ process.pid.toString();
 		var opcodeArray = getMemInfo(process.slot);
 		var data = opcodeArray.join(" ");

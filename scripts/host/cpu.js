@@ -67,7 +67,7 @@ function Cpu() {
 		}
         // TODO: Accumulate CPU usage and profiling statistics here.
         // Do the real work here. Be sure to set this.isExecuting appropriately.
-		console.log("ALGORITHM IS... "+ _Scheduler.algorithm);
+		//console.log("ALGORITHM IS... "+ _Scheduler.algorithm);
 		if(_Scheduler.algorithm === _RoundRobin)
 		{
 			if(_CurCycleCount > _Quantum)
@@ -135,13 +135,13 @@ function Cpu() {
 		
 		this.execute = function(opcode)  //something is still not quite right, but it is able to produce the right output at this time
 		{								 //has to do with being stored into 4 instead of 4B, for example
-				console.log("Entered execute");
-				console.log(this.PC);
-				console.log(opcode);
+				//console.log("Entered execute");
+				//console.log(this.PC);
+				//console.log(opcode);
 				//if(_CurrentProcess.state != TERMINATED){ 				
 				_CurrentProcess.update(RUNNING, this.PC, this.Acc, this.Xreg, this.Yreg, this.Zflag);
 				
-				console.log("PC is: " + this.PC + " ACC is: " + this.Acc);
+				//console.log("PC is: " + this.PC + " ACC is: " + this.Acc);
 				if(opcode === "A9") //Load accumulator with a constant
 				{
 					this.Acc = parseInt(_MemoryManager.getNext(),16);
@@ -167,7 +167,7 @@ function Cpu() {
 				{
 					var nextCell = parseInt(_MemoryManager.getNext());//
 					var nextNext = parseInt(_MemoryManager.getNext());//
-					console.log("nextcell: " + nextCell + " and nextnext: "+nextNext);
+					//console.log("nextcell: " + nextCell + " and nextnext: "+nextNext);
 					var addressH = (nextNext + nextCell);
 					addressH = addressH.toString();
 					

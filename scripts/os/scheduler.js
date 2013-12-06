@@ -37,11 +37,17 @@ function Scheduler()
 			
 			_CurrentProcess = _ReadyQueue.dequeue();
 			
-			if(_CurrentProcess.slot === -1)
+			console.log(_CurrentProcess.memloc + "currentProcess.slot");
+			
+			if(_CurrentProcess.memloc === -1)
 			{
+				console.log("CurrentProcess slot was -1");
+				console.log("ready queue size " + _ReadyQueue.getSize());
 				if(_ReadyQueue.getSize() != 0 && !_MemoryManager.openMemLocExists())
 				{
-					_MemoryManager.rollOut(_ReadyQueue.q[(_ReadyQueue.getSize()-1)]);
+					console.log(_LoadedJobs[2].pid);
+					_MemoryManager.rollOut(_LoadedJobs[_ReadyQueue.getSize()-1]);
+					console.log("Did this do anything? ");// +_MemoryManager.rollOut(_ReadyQueue.q[(_ReadyQueue.getSize()-1)]));
 				}
 				_MemoryManager.rollIn(_CurrentProcess);
 			}

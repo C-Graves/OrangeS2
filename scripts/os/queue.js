@@ -9,6 +9,7 @@
    
 function Queue()
 {
+	//var contents = [];
     // Properties
     this.q = new Array();
 
@@ -57,12 +58,13 @@ function Queue()
 		//console.log(this.q);
 	};
 	
-	//this.getItem = function(index){
-	//	var contains = contents[index];
-	//	
-	//	if(contains){return contains.object
+	this.getItem = function(index){
+		var contains = _ReadyQueue.q[index];
+		
+		if(contains){return contains.object;}
+		else{return undefined;}
 	
-	//}
+	}
     
     this.toString = function() {
         var retVal = "";
