@@ -136,6 +136,53 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 		return memoryArray;
 	}
 	
+	
+	this.rollIn = function(process)
+	{
+		var file = "process"+ process.pid.toString();
+		var opcode = krnfsDD.readFile(file);
+		var opcodeArray = opcode.split(/\s/);
+		var memSlot = _MemoryManager.getOpenMemLoc();
+		
+		process.base = memoryTable.base;
+		process.limit = memoryTable.limit;
+		process.slot = memoryTable.memloc;
+		process.state = LOADED;
+		
+		this.setAvail(process.slot);
+		
+		var opcode = "";
+		for(var j = process.base; j < opcodeArray.length + process.base; j++)
+		{
+			opcode = opcodeArray[j-process.base];
+			_Memory[j] = opcode.toUpperCase();
+		}
+		
+		krnfsDD.deleteFile(file);
+	}
+	
+	this.rollOut = function(process)
+	{
+		var file = "process"+ process.pid.toString();
+		var opcodeArray = getMemInfo(process.slot);
+		var data = opcodeArray.join(" ");
+		
+		krnfsDD.createFile(file);
+		krnfsDD.writeFile(file, data);
+		
+		this.setAvail(process.slot);
+		
+		if(process.slot === 0){clearMemory0();}
+		if(process.slot === 1){clearMemory1();}
+		if(process.slot === 2){clearMemory2();}
+		
+		process.base = -1;
+		process.limit = -1;
+		process.slot = -1;
+		process.state = ONDISK;
+		
+	}
+	
 
 	
 }

@@ -29,6 +29,7 @@ var LOADED   	= 1; // to memory
 var READY		= 2; // to execute
 var RUNNING 	= 3; // going now
 var TERMINATED 	= 4; // done
+var ONDISK 		= 5; //stored to disk
 //
 // Global Variables
 //

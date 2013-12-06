@@ -111,16 +111,25 @@ function updateReadyQueueDisp() //This isn't quite working, but it does show how
 		totalProcesses = 3;
 	} 
 	
-	clearReadyQueueDisp();
+	if( splitPIDs.length-1 > 4)
+	{
+		splitPIDs = 4;
+	}
 	
+	clearReadyQueueDisp();
+	try{
 	for(var i = 0; i < splitPIDs.length-1; i++)
 	{
 		var RQpid = document.getElementById("rq" +(i+1)+"pid").innerHTML = _LoadedJobs[splitPIDs[i]].pid;
 		var RQstate = document.getElementById("rq" +(i+1)+"state").innerHTML = translateState(_LoadedJobs[splitPIDs[i]].state);
 		var RQbase = document.getElementById("rq" +(i+1)+"base").innerHTML = _LoadedJobs[splitPIDs[i]].base;
 		var RQlimit = document.getElementById("rq" +(i+1)+"limit").innerHTML = _LoadedJobs[splitPIDs[i]].limit;
+		//var RQloc = document.getElementById("rq" +(i+1)+"loc").innerHTML = _LoadedJobs[splitPIDs[i]].limit;
+		
 		//console.log("pid: " + RQpid + " state: "+RQstate+ " base: "+RQbase+" limit: "+RQlimit); 
 	}
+	}
+	catch(err){}
 }
 }
 
@@ -143,5 +152,6 @@ function translateState(num)
 	else if (num === 2) {return "READY";}
 	else if (num === 3) {return "RUNNING";}
 	else if (num === 4) {return "TERMINATED";}
+	else if (num === 5) {return "ON DISK";}
 	else{return num;}
 }

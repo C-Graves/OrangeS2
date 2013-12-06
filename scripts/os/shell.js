@@ -526,7 +526,7 @@ function shellLoad(args)
 	
 	
 	//console.log(arrayOpcodes.length + " is < " + _MemoryBlockSize);
-	if (isValid && arrayOpcodes.length < _MemoryBlockSize)
+	if (isValid && _MemoryManager.openMemLocExists())//arrayOpcodes.length < _MemoryBlockSize)
 	{
 		_StdIn.putText("Input entered is valid.");
 	
@@ -577,6 +577,36 @@ function shellLoad(args)
 		
 		
 	}
+	else if (isValid && !_MemoryManager.openMemLocExists())
+	{
+		var process = newProcess(priority); 
+		var upInput = document.getElementById("taProgramInput");
+		var text = upInput.value;
+		text = trim(text);
+		console.log("text: "+text);
+		var file = "process"+process.pid.toString();
+		
+		krnfsDD.createFile(file);
+		krnfsDD.writeFile(file, text);
+		
+		process.state = ONDISK;
+		
+		_LoadedJobs[process.pid] = process;
+		
+		if(priority === -1) //optional parameter left out
+		{
+			_StdIn.advanceLine();
+			_StdIn.putText("Process with PID " + process.pid + " added to disk");
+		}
+		else
+		{
+			_StdIn.advanceLine();
+			_StdIn.putText("Process with PID " + process.pid + " added to disk with priority "+ priority);
+		}
+		
+	}
+	
+	
 	else 
 	{
 		_StdIn.putText("Invalid. Please check your User Program Input.");

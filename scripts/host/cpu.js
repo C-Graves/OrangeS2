@@ -44,6 +44,27 @@ function Cpu() {
 	
 		
         krnTrace("CPU cycle");
+		
+		if(_CurrentProcess.slot === -1)
+		{
+			if(_ReadyQueue.getSize() > 0)
+			{
+				_MemoryManager.rollOut(_ReadyQueue.q[(_ReadyQueue.getSize()-1)]);
+			}
+			else
+			{
+				var toRoll;
+				for(i in _LoadedJobs)
+				{
+					if(_LoadedJobs[i].slot != -1)
+					{
+						toRoll = i;
+					}
+				}
+				_MemoryManager.rollOut(_LoadedJobs[toRoll]);
+			}
+			_MemoryManager.rollIn(_CurrentProcess);
+		}
         // TODO: Accumulate CPU usage and profiling statistics here.
         // Do the real work here. Be sure to set this.isExecuting appropriately.
 		console.log("ALGORITHM IS... "+ _Scheduler.algorithm);

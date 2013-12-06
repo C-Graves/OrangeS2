@@ -37,6 +37,14 @@ function Scheduler()
 			
 			_CurrentProcess = _ReadyQueue.dequeue();
 			
+			if(_CurrentProcess.slot === -1)
+			{
+				if(_ReadyQueue.getSize() != 0 && !_MemoryManager.openMemLocExists())
+				{
+					_MemoryManager.rollOut(_ReadyQueue.q[(_ReadyQueue.getSize()-1)]);
+				}
+				_MemoryManager.rollIn(_CurrentProcess);
+			}
 			
 			_CPU.update(_CurrentProcess.PC, _CurrentProcess.Acc, _CurrentProcess.Xreg,
 							_CurrentProcess.Yreg, _CurrentProcess.Zflag);
