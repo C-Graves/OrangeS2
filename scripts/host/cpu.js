@@ -353,8 +353,9 @@ function Cpu() {
 					
 					_CurrentProcess.update(TERMINATED, this.PC, this.Acc, this.Xreg, this.Yreg, this.Zflag);
 					
-					//console.log(_MemoryManager.getMemloc());
+					console.log(_MemoryManager.getMemloc());
 					_MemoryManager.setAvail(_MemoryManager.getMemloc());
+					console.log(_MemoryManager.setAvail(_MemoryManager.getMemloc()));
 					//_MemoryManager.setAvail(_CurrentProcess.slot);
 					console.log(_MemoryManager.getOpenMemLoc());
 					

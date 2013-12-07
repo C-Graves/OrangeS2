@@ -139,7 +139,9 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 	
 	this.rollIn = function(process)
 	{
+		console.log("rolling in");
 		var file = "process"+ process.pid.toString();
+		console.log("file is "+file);
 		var opcode = krnfsDD.readFile(file);
 		var opcodeArray = opcode.split(/\s/);
 		var memSlot = _MemoryManager.getOpenMemLoc();
@@ -150,7 +152,9 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 		process.slot = memSlot.memloc;
 		process.state = LOADED;
 		
-		this.setAvail(process.slot);
+		//this.setAvail(process.slot);
+		console.log(_MemoryManager.getMemloc(process));
+		memSlot.empty = true;
 		
 		var opcode = "";
 		for(var j = process.base; j < opcodeArray.length + process.base; j++)
@@ -166,13 +170,18 @@ function memoryManager()  //basic helper functions to keep code clean-er when de
 	{
 		console.log(process.pid+" = pid");
 		var file = "process"+ process.pid.toString();
-		var opcodeArray = getMemInfo(process.slot);
+		var opcodeArray = _MemoryManager.getMemInfo(process.slot);
+		//console.log(opcodeArray);
 		var data = opcodeArray.join(" ");
 		
 		krnfsDD.createFile(file);
 		krnfsDD.writeFile(file, data);
 		
-		this.setAvail(process.slot);
+		//this.setAvail(process.slot);
+		//var curLoc = _MemoryManager.getMemloc(process);
+		//_MemoryManager.memoryTable.curLoc.empty = true;
+		//console.log("currentLocation "+curLoc.empty);
+		//memoryTable.(_MemoryManager.getMemloc()).empty = false;
 		
 		if(process.slot === 0){clearMemory0();}
 		if(process.slot === 1){clearMemory1();}

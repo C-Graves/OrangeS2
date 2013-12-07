@@ -50,9 +50,9 @@ function krnFindOpenDBlock()
 		if(keyVal >= 0 && keyVal <= DIREND)
 		{
 			valueString = localStorage[key].toString();
-			console.log(valueString);
+			//console.log(valueString);
 			occupiedBit = valueString.charAt(0);
-			console.log("occupied bit " +occupiedBit);
+			//console.log("occupied bit " +occupiedBit);
 		
 			if(parseInt(occupiedBit) === 0)
 			{
@@ -79,16 +79,16 @@ function krnFindOpenFBlock()
 		if(keyVal >= FILESTART && keyVal <= FILEEND)
 		{
 			valueString = localStorage[key].toString();
-			console.log("valueString to check: "+valueString+ " at key value "+key);
+			//console.log("valueString to check: "+valueString+ " at key value "+key);
 			
 			occupiedBit = valueString.charAt(0);
 		
 			if(parseInt(occupiedBit) === 0)
 			{
-				console.log(key + " found at this key");
+				//console.log(key + " found at this key");
 				localStorage[key] = fileSystemVal(1,valueString.charAt(1),valueString.charAt(2),valueString.charAt(3),"");
 				//krnSetValOcc(key,"");
-				console.log(localStorage[key]);
+				//console.log(localStorage[key]);
 				return(key);
 			}
 		}
@@ -147,22 +147,22 @@ function krnLinkedFileBlocks(firstFKey)
 	var curKey = firstFKey;
 	var curString = "";
 	
-	console.log("firstFKey: "+firstFKey);
-	console.log("curKey: "+curKey);
+	//console.log("firstFKey: "+firstFKey);
+	//console.log("curKey: "+curKey);
 	while(curKey.toString() != (TSB))
 	{
-		console.log("entered while");
+		//console.log("entered while");
 		curString = localStorage[curKey];
-		console.log(typeof(curString));
+		//console.log(typeof(curString));
 		curStringS = curString.toString();
-		console.log(curStringS);
+		//console.log(curStringS);
 		
 		var t = curStringS.charAt(1);
 		var s = curStringS.charAt(2);
 		var b = curStringS.charAt(3);
 		
 		var theKey = (t+""+s+""+b);
-		console.log("theKey: "+theKey);
+	//	console.log("theKey: "+theKey);
 		
 		if(theKey != TSB)
 		{

@@ -45,7 +45,6 @@ function Scheduler()
 				console.log("ready queue size " + _ReadyQueue.getSize());
 				if(_ReadyQueue.getSize() != 0 && !_MemoryManager.openMemLocExists())
 				{
-					console.log(_LoadedJobs[2].pid);
 					_MemoryManager.rollOut(_LoadedJobs[_ReadyQueue.getSize()-1]);
 					console.log("Did this do anything? ");// +_MemoryManager.rollOut(_ReadyQueue.q[(_ReadyQueue.getSize()-1)]));
 				}

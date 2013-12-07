@@ -128,6 +128,7 @@ function getDate()
 		if(memLocation)
 		{
 			_MemoryManager.setAvail(memLocation.memloc);
+			console.log(memLocation.empty);
 			base = memLocation.base;
 			console.log("base: " + base);
 			limit = memLocation.limit;
